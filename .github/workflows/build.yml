@@ -13,7 +13,6 @@ env:
   REGISTRY_USER: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
 
-
 jobs:
   podman-build:
     runs-on: ubuntu-latest
