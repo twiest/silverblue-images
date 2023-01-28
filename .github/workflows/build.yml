@@ -23,7 +23,7 @@ jobs:
       - name: Build container image
         uses: redhat-actions/buildah-build@v2
         with:
-          context: "."
+          context: "silverblue-base"
           containerfiles: Containerfile
           image: ${{ env.IMAGE_NAME }}
           layers: false
