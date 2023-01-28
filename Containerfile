@@ -7,5 +7,5 @@ RUN rpm-ostree install \
     rm -rf /var/lib/unbound && \ 
     ostree container commit
 
-RUN echo "Defaults timestamp_timeout=30" > /etc/sudoers.d/timeout && \
+RUN echo "Defaults timestamp_timeout=1200" > /etc/sudoers.d/timeout && \
     chmod 660 /etc/sudoers.d/timeout
