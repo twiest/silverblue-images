@@ -7,5 +7,12 @@ RUN rpm-ostree install \
     rm -rf /var/lib/unbound && \ 
     ostree container commit
 
+# Install rpmfusion repos
+RUN rpm-ostree install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm && \
+    rpm-ostree install https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
+    #cleanup and verification stage
+    rm -rf /var/lib/unbound && \
+    ostree container commit
+
 RUN echo "Defaults timestamp_timeout=1200" > /etc/sudoers.d/timeout && \
     chmod 660 /etc/sudoers.d/timeout
