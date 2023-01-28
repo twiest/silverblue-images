@@ -14,7 +14,7 @@ env:
   REGISTRY_PASSWORD: ${{ github.token }}
 
 jobs:
-  podman-build:
+  silverblue-base-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
