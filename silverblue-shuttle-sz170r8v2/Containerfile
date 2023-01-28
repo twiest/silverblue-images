@@ -1,0 +1,8 @@
+FROM ghcr.io/twiest/silverblue-base:latest
+
+# Install nvidia drivers
+RUN rpm-ostree install \
+    akmod-nvidia-470xx xorg-x11-drv-nvidia-470xx && \
+    #cleanup and verification stage
+    rm -rf /var/lib/unbound /var/log/akmods/akmods.log && \
+    ostree container commit
