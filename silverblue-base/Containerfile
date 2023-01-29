@@ -1,56 +1,34 @@
-# Set this to the fedora version being used.
-ARG BUILDER_VERSION=37
-
-# ---------------- Container 1, determining kernel version ----------------
-FROM ghcr.io/cgwalters/fedora-silverblue:37 as kernel-query
-#We can't use the `uname -r` as it will pick up the host kernel version
-RUN rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}' > /kernel-version.txt
-
-
-# ---------------- Container 2, zfs builder ----------------
-# Using https://openzfs.github.io/openzfs-docs/Developer%20Resources/Custom%20Packages.html
-FROM registry.fedoraproject.org/fedora:${BUILDER_VERSION} as builder
-ARG BUILDER_VERSION
-COPY --from=kernel-query /kernel-version.txt /kernel-version.txt
-WORKDIR /etc/yum.repos.d
-RUN curl -L -O https://src.fedoraproject.org/rpms/fedora-repos/raw/f${BUILDER_VERSION}/f/fedora-updates-archive.repo && \
-    sed -i 's/enabled=AUTO_VALUE/enabled=true/' fedora-updates-archive.repo
-RUN dnf install -y jq dkms gcc make autoconf automake libtool rpm-build libtirpc-devel libblkid-devel \
-    libuuid-devel libudev-devel openssl-devel zlib-devel libaio-devel libattr-devel elfutils-libelf-devel \
-    kernel-$(cat /kernel-version.txt) kernel-modules-$(cat /kernel-version.txt) kernel-devel-$(cat /kernel-version.txt) \
-    python3 python3-devel python3-setuptools python3-cffi libffi-devel git ncompress libcurl-devel
-WORKDIR /
-# Uses project_id from: https://release-monitoring.org/project/11706/
-RUN curl "https://release-monitoring.org/api/v2/versions/?project_id=11706" | jq --raw-output '.stable_versions[0]' >> /zfs_version.txt
-RUN curl -L -O https://github.com/openzfs/zfs/releases/download/zfs-$(cat /zfs_version.txt)/zfs-$(cat /zfs_version.txt).tar.gz && \
-    tar xzf zfs-$(cat /zfs_version.txt).tar.gz && mv zfs-$(cat /zfs_version.txt) zfs
-WORKDIR /zfs
-RUN ./configure -with-linux=/usr/src/kernels/$(cat /kernel-version.txt)/ -with-linux-obj=/usr/src/kernels/$(cat /kernel-version.txt)/ \
-    && make -j1 rpm-utils rpm-kmod
-
-
-# ---------------- Container 3, actual one used ----------------
-FROM ghcr.io/cgwalters/fedora-silverblue:${BUILDER_VERSION} as kernel-query
-
-# Install the basics
-RUN rpm-ostree install \
-    distrobox iotop screen snapper strace terminator thunderbird vim gnome-tweak-tool neofetch && \
-    #cleanup and verification stage
-    rm -rf /var && \
-    ostree container commit
+FROM ghcr.io/cgwalters/fedora-silverblue:37
 
 # Install rpmfusion repos
 RUN rpm-ostree install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm && \
     rpm-ostree install https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
-    #cleanup and verification stage
-    rm -rf /var && \
+    # cleanup and verification stage
+    rm -vrf /var && \
     ostree container commit
 
-# Install ZFS modules
-COPY --from=builder /zfs/*.rpm /
-RUN rpm-ostree install /*.$(uname -p).rpm && \
-    #cleanup and verification stage
-    rm -rf /var /*.rpm && \
+# Install ZFS repository
+RUN rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-2$(rpm --eval "%{dist}").noarch.rpm && \
+    # cleanup and verification stage
+    rm -vrf /var /*.rpm && \
+    ostree container commit
+
+# Install the basics
+RUN rpm-ostree install \
+    distrobox iotop screen snapper strace terminator thunderbird vim gnome-tweak-tool neofetch \
+    kernel-devel && \
+    # cleanup and verification stage
+    rm -vrf /var && \
+    ostree container commit
+
+# Install zfs
+RUN rpm-ostree install zfs && \
+    # TODO: Figure out why this is needed.
+    test -f /usr/bin/ld || ln -s /usr/bin/ld.bfd /usr/bin/ld && \
+    dkms autoinstall -k $(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}') && \
+    # cleanup and verification stage
+    test -h /usr/bin/ld && rm -v /usr/bin/ld && \
+    rm -vrf /var && \
     ostree container commit
 
 RUN echo "Defaults timestamp_timeout=1200" > /etc/sudoers.d/timeout && \
