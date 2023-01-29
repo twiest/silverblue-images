@@ -8,8 +8,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BASE_IMAGE_NAME: "silverblue-base"
-  SHUTTLE_IMAGE_NAME: "silverblue-shuttle-sz170r8v2"
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
   REGISTRY_USER: ${{ github.actor }}
   REGISTRY_PASSWORD: ${{ github.token }}
@@ -26,14 +24,14 @@ jobs:
         with:
           context: "silverblue-base"
           containerfiles: "silverblue-base/Containerfile"
-          image: ${{ env.BASE_IMAGE_NAME }}
+          image: silverblue-base
           layers: false
           oci: true
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.6
         with:
-          image: ${{ env.BASE_IMAGE_NAME }}
+          image: silverblue-base
           tags: "latest"
           registry: ${{ env.IMAGE_REGISTRY }}
           username: ${{ env.REGISTRY_USER }}
@@ -52,14 +50,40 @@ jobs:
         with:
           context: "silverblue-shuttle-sz170r8v2"
           containerfiles: "silverblue-shuttle-sz170r8v2/Containerfile"
-          image: ${{ env.SHUTTLE_IMAGE_NAME }}
+          image: silverblue-shuttle-sz170r8v2
           layers: false
           oci: true
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.6
         with:
-          image: ${{ env.SHUTTLE_IMAGE_NAME }}
+          image: silverblue-shuttle-sz170r8v2
+          tags: "latest"
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          extra-args: |
+            --disable-content-trust
+
+  silverblue-supermicro-x10sri-f-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Build container image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: "silverblue-shuttle-sz170r8v2"
+          containerfiles: "silverblue-shuttle-sz170r8v2/Containerfile"
+          image: silverblue-supermicro-x10sri-f
+          layers: false
+          oci: true
+
+      - name: Push to ghcr.io
+        uses: redhat-actions/push-to-registry@v2.6
+        with:
+          image: silverblue-supermicro-x10sri-f
           tags: "latest"
           registry: ${{ env.IMAGE_REGISTRY }}
           username: ${{ env.REGISTRY_USER }}
