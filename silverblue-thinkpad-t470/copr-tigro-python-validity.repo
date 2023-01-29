@@ -1,0 +1,10 @@
+[copr:copr.fedorainfracloud.org:tigro:python-validity]
+name=Copr repo for python-validity owned by tigro
+baseurl=https://download.copr.fedorainfracloud.org/results/tigro/python-validity/fedora-$releasever-$basearch/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/tigro/python-validity/pubkey.gpg
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1

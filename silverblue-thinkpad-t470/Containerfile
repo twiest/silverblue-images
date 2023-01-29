@@ -1,0 +1,20 @@
+FROM ghcr.io/twiest/silverblue-base:latest
+
+ADD copr-tigro-python-validity.repo /etc/yum.repos.d/
+
+## Remove incompatible fingerprint utils
+RUN rpm-ostree uninstall fprintd-pam fprintd && \
+    # cleanup and verification stage
+    rm -vrf /var && \
+    ostree container commit
+
+# Install fingerprint utils
+RUN rpm-ostree install fprintd-clients fprintd-clients-pam open-fprintd python3-validity && \
+    # cleanup and verification stage
+    rm -vrf /var && \
+    ostree container commit
+
+# Add fingerprint files
+ADD python-validity/6_07f_lenovo_mis_qm.xpfwext /usr/share/python-validity/
+ADD python-validity/backoff /usr/share/python-validity/
+ADD python-validity/calib-data.bin /usr/share/python-validity/
