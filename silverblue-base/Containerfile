@@ -21,15 +21,18 @@ RUN rpm-ostree install \
     rm -vrf /var && \
     ostree container commit
 
+# TODO: Remove the following line once this bug is fixed: https://github.com/coreos/rpm-ostree/issues/4201
+RUN test -f /usr/bin/ld || ln -s /usr/bin/ld.bfd /usr/bin/ld
+
 # Install zfs
 RUN rpm-ostree install zfs && \
-    # TODO: Remove the following line once this bug is fixed: https://github.com/coreos/rpm-ostree/issues/4201
-    test -f /usr/bin/ld || ln -s /usr/bin/ld.bfd /usr/bin/ld && \
     dkms autoinstall -k $(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}') && \
     # cleanup and verification stage
-    test -h /usr/bin/ld && rm -v /usr/bin/ld && \
     rm -vrf /var && \
     ostree container commit
+
+# TODO: Remove the following line once this bug is fixed: https://github.com/coreos/rpm-ostree/issues/4201
+RUN test -h /usr/bin/ld && rm -v /usr/bin/ld
 
 RUN echo "Defaults timestamp_timeout=1200" > /etc/sudoers.d/timeout && \
     chmod 660 /etc/sudoers.d/timeout
