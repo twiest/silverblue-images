@@ -74,8 +74,8 @@ jobs:
       - name: Build container image
         uses: redhat-actions/buildah-build@v2
         with:
-          context: "silverblue-shuttle-sz170r8v2"
-          containerfiles: "silverblue-shuttle-sz170r8v2/Containerfile"
+          context: "silverblue-supermicro-x10sri-f"
+          containerfiles: "silverblue-supermicro-x10sri-f/Containerfile"
           image: silverblue-supermicro-x10sri-f
           layers: false
           oci: true
@@ -100,8 +100,8 @@ jobs:
       - name: Build container image
         uses: redhat-actions/buildah-build@v2
         with:
-          context: "silverblue-shuttle-sz170r8v2"
-          containerfiles: "silverblue-shuttle-sz170r8v2/Containerfile"
+          context: "silverblue-thinkpad-t470"
+          containerfiles: "silverblue-thinkpad-t470/Containerfile"
           image: silverblue-thinkpad-t470
           layers: false
           oci: true
