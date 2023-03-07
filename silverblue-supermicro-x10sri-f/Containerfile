@@ -1,1 +1,16 @@
 FROM ghcr.io/twiest/silverblue-base:latest
+
+# Workarounds to make CyberPower UPS management daemon install correctly
+RUN mkdir -p /var/usrlocal && \
+    mkdir -p /etc/init.d && \
+    ln -s /usr/lib /var/usrlocal/lib && \
+    echo -e "[Unit]\nDescription=Set Up CyberPower pwrstatd\nAfter=local-fs.target\n\n[Service]\nType=oneshot\nExecStart=bash -c 'mkdir -p /var/usrlocal/lib && ln -sf /usr/lib/powerpanel /var/usrlocal/lib/powerpanel'\n\n[Install]\nWantedBy=pwrstatd.service" > /etc/systemd/system/pwrstatd-setup.service && \
+    ln -sf /etc/systemd/system/pwrstatd-setup.service /etc/systemd/system/multi-user.target.wants/pwrstatd-setup.service
+
+
+# Install CyberPower UPS management daemon
+RUN rpm-ostree install 'https://www.cyberpower.com/global/en/File/GetFileSampleByType?fileId=SU-18070001-07&fileType=Download%20Center&fileSubType=FileOriginal' && \
+    tree -a /var && \
+    # cleanup and verification stage
+    rm -vrf /var && \
+    ostree container commit
