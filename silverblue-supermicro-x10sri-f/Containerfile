@@ -1,1 +1,7 @@
 FROM ghcr.io/twiest/silverblue-base:latest
+
+# Install UPS software
+RUN rpm-ostree install nut && \
+    # cleanup and verification stage
+    rm -vrf /var && \
+    ostree container commit
