@@ -18,7 +18,7 @@ RUN rpm-ostree install \
     distrobox iotop screen snapper strace terminator thunderbird vim gnome-tweak-tool neofetch fuse-encfs borgbackup \
     cheese vlc seahorse htop rclone inxi fio cracklib-dicts hwinfo gst ipmitool pv fuse-sshfs nvme-cli \
     kernel-devel kernel-devel-matched kernel-headers kernel-srpm-macros smartmontools gsmartcontrol hdparm \
-    zstd pbzip2 && \
+    zstd pbzip2 lz4 && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
