@@ -19,4 +19,4 @@ cd $(dirname $0)
 IMGNAME=$(basename $PWD)
 DATESTAMP=$(date +%Y-%m-%d)
 
-time podman build $@ . -t "${IMGNAME}:${DATESTAMP}" -t "$IMGNAME:latest"
+time podman build $@ . -t "${IMGNAME}:${DATESTAMP}" -t "$IMGNAME:latest" -t ghcr.io/twiest/silverblue-base:latest
