@@ -1,4 +1,4 @@
-FROM ghcr.io/cgwalters/fedora-silverblue:37
+FROM ghcr.io/twiest/silverblue-zfs-base:latest
 
 # Install rpmfusion repos
 RUN rpm-ostree install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm && \
@@ -7,34 +7,14 @@ RUN rpm-ostree install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-
     rm -vrf /var && \
     ostree container commit
 
-# Install ZFS repository
-RUN rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-2$(rpm --eval "%{dist}").noarch.rpm && \
-    # cleanup and verification stage
-    rm -vrf /var /*.rpm && \
-    ostree container commit
-
 # Install the basics
 RUN rpm-ostree install \
     distrobox iotop screen snapper strace terminator thunderbird vim gnome-tweak-tool neofetch fuse-encfs borgbackup \
     cheese vlc seahorse htop rclone inxi fio cracklib-dicts hwinfo gst ipmitool pv fuse-sshfs nvme-cli \
-    kernel-devel kernel-devel-matched kernel-headers kernel-srpm-macros smartmontools gsmartcontrol hdparm \
-    zstd pbzip2 lz4 && \
+    smartmontools gsmartcontrol hdparm zstd pbzip2 lz4 && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
-
-# TODO: Remove the following line once this bug is fixed: https://github.com/coreos/rpm-ostree/issues/4201
-RUN test -f /usr/bin/ld || ln -s /usr/bin/ld.bfd /usr/bin/ld
-
-# Install zfs
-RUN rpm-ostree install zfs && \
-    dkms autoinstall -k $(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}') && \
-    # cleanup and verification stage
-    rm -vrf /var && \
-    ostree container commit
-
-# TODO: Remove the following line once this bug is fixed: https://github.com/coreos/rpm-ostree/issues/4201
-RUN test -h /usr/bin/ld && rm -v /usr/bin/ld
 
 RUN echo "Defaults timestamp_timeout=1200" > /etc/sudoers.d/timeout && \
     chmod 660 /etc/sudoers.d/timeout

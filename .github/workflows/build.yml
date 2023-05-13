@@ -13,6 +13,32 @@ env:
   REGISTRY_PASSWORD: ${{ github.token }}
 
 jobs:
+  silverblue-zfs-base-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Build container image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: "silverblue-zfs-base"
+          containerfiles: "silverblue-zfs-base/Containerfile"
+          image: silverblue-zfs-base
+          layers: false
+          oci: true
+
+      - name: Push to ghcr.io
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: silverblue-zfs-base
+          tags: "latest"
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          extra-args: |
+            --disable-content-trust
+
   silverblue-base-build:
     runs-on: ubuntu-latest
     steps:
