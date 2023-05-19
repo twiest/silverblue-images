@@ -1,7 +1,7 @@
-FROM ghcr.io/cgwalters/fedora-silverblue:37
+FROM ghcr.io/cgwalters/fedora-silverblue:38
 
 # Install ZFS repository
-RUN rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-2$(rpm --eval "%{dist}").noarch.rpm && \
+RUN rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-3$(rpm --eval "%{dist}").noarch.rpm && \
     # cleanup and verification stage
     rm -vrf /var /*.rpm && \
     ostree container commit
