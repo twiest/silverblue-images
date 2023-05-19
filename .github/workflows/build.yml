@@ -66,6 +66,7 @@ jobs:
             --disable-content-trust
 
   silverblue-shuttle-sz170r8v2-build:
+    needs: silverblue-base-build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -92,6 +93,7 @@ jobs:
             --disable-content-trust
 
   silverblue-supermicro-x10sri-f-build:
+    needs: silverblue-base-build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -118,6 +120,7 @@ jobs:
             --disable-content-trust
 
   silverblue-thinkpad-t470-build:
+    needs: silverblue-base-build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
