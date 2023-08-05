@@ -16,6 +16,8 @@ trap 'err_report $? $LINENO' ERR
 
 cd $(dirname $0)
 
+files/build.sh
+
 IMGNAME=$(basename $PWD)
 DATESTAMP=$(date +%Y-%m-%d)
 
