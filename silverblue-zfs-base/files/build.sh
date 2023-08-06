@@ -9,4 +9,4 @@ cd "$(dirname $0)"
 
 cat twiest-zfs---audit.log | audit2allow -M twiest-zfs
 
-bzip2 twiest-zfs.pp
+bzip2 --keep twiest-zfs.pp

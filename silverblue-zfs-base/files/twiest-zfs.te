@@ -2,20 +2,21 @@
 module twiest-zfs 1.0;
 
 require {
-	type proc_net_t;
+	type sysctl_rpc_t;
 	type unlabeled_t;
-	type device_t;
+	type kernel_generic_helper_t;
 	type mnt_t;
 	type fs_t;
-	type kernel_generic_helper_t;
-	type mount_exec_t;
 	type mount_var_run_t;
-	class file { execute execute_no_trans getattr map open read };
+	type device_t;
+	type mount_exec_t;
+	type proc_net_t;
+	class file { execute execute_no_trans getattr map open read write };
 	class lnk_file read;
 	class dir { getattr mounton search };
 	class capability { setgid setuid sys_admin };
 	class chr_file { ioctl open read write };
-	class filesystem { mount unmount };
+	class filesystem { getattr mount unmount };
 }
 
 #============= kernel_generic_helper_t ==============
@@ -25,7 +26,7 @@ require {
 allow kernel_generic_helper_t device_t:chr_file { ioctl open read write };
 
 #!!!! This avc is allowed in the current policy
-allow kernel_generic_helper_t fs_t:filesystem { mount unmount };
+allow kernel_generic_helper_t fs_t:filesystem { getattr mount unmount };
 
 #!!!! This avc is allowed in the current policy
 allow kernel_generic_helper_t mnt_t:lnk_file read;
@@ -37,10 +38,21 @@ allow kernel_generic_helper_t mount_exec_t:file { execute execute_no_trans getat
 allow kernel_generic_helper_t mount_var_run_t:dir search;
 
 #!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t mount_var_run_t:file { getattr read };
+allow kernel_generic_helper_t mount_var_run_t:file open;
+
+#!!!! This avc is allowed in the current policy
 allow kernel_generic_helper_t proc_net_t:lnk_file read;
 
 #!!!! This avc is allowed in the current policy
 allow kernel_generic_helper_t self:capability { setgid setuid sys_admin };
+
+#!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t sysctl_rpc_t:dir search;
+
+#!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t sysctl_rpc_t:file { read write };
+allow kernel_generic_helper_t sysctl_rpc_t:file open;
 
 #!!!! This avc is allowed in the current policy
 allow kernel_generic_helper_t unlabeled_t:dir { getattr mounton search };
