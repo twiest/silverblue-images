@@ -4,9 +4,9 @@ set -eou pipefail
 
 cd "$(dirname $0)"
 
-[ -f "twiest-zfs-snapshot-mount.pp.bz2" ] && rm twiest-zfs-snapshot-mount.pp.bz2
-[ -f "twiest-zfs-snapshot-mount.te" ] && rm twiest-zfs-snapshot-mount.te
+[ -f "twiest-zfs.pp.bz2" ] && rm twiest-zfs.pp.bz2
+[ -f "twiest-zfs.te" ] && rm twiest-zfs.te
 
-cat twiest-zfs-snapshot-mount---audit.log | audit2allow -M twiest-zfs-snapshot-mount
+cat twiest-zfs---audit.log | audit2allow -M twiest-zfs
 
-bzip2 twiest-zfs-snapshot-mount.pp
+bzip2 twiest-zfs.pp
