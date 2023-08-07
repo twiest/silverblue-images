@@ -25,6 +25,8 @@ RUN rpm-ostree install zfs && \
 
 # Fix selinux so that it allows zfs to mount snapshots
 ADD files/twiest-zfs-snapshot-mount.pp.bz2 /usr/share/selinux/packages/twiest-zfs-snapshot-mount.pp.bz2
+ADD files/twiest-zfs-selinux.service /etc/systemd/system/twiest-zfs-selinux.service
+RUN ln -s /etc/systemd/system/twiest-zfs-selinux.service /etc/systemd/system/multi-user.target.wants/twiest-zfs-selinux.service
 
 # TODO: Remove the following line once this bug is fixed: https://github.com/coreos/rpm-ostree/issues/4201
 RUN test -h /usr/bin/ld && rm -v /usr/bin/ld

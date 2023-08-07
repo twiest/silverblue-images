@@ -3,14 +3,14 @@ module twiest-zfs 1.0;
 
 require {
 	type sysctl_rpc_t;
+	type mnt_t;
 	type unlabeled_t;
 	type kernel_generic_helper_t;
-	type mnt_t;
-	type fs_t;
-	type mount_var_run_t;
-	type device_t;
 	type mount_exec_t;
+	type fs_t;
 	type proc_net_t;
+	type device_t;
+	type mount_var_run_t;
 	class file { execute execute_no_trans getattr map open read write };
 	class lnk_file read;
 	class dir { getattr mounton search };
@@ -38,8 +38,7 @@ allow kernel_generic_helper_t mount_exec_t:file { execute execute_no_trans getat
 allow kernel_generic_helper_t mount_var_run_t:dir search;
 
 #!!!! This avc is allowed in the current policy
-allow kernel_generic_helper_t mount_var_run_t:file { getattr read };
-allow kernel_generic_helper_t mount_var_run_t:file open;
+allow kernel_generic_helper_t mount_var_run_t:file { getattr open read };
 
 #!!!! This avc is allowed in the current policy
 allow kernel_generic_helper_t proc_net_t:lnk_file read;
@@ -51,8 +50,7 @@ allow kernel_generic_helper_t self:capability { setgid setuid sys_admin };
 allow kernel_generic_helper_t sysctl_rpc_t:dir search;
 
 #!!!! This avc is allowed in the current policy
-allow kernel_generic_helper_t sysctl_rpc_t:file { read write };
-allow kernel_generic_helper_t sysctl_rpc_t:file open;
+allow kernel_generic_helper_t sysctl_rpc_t:file { open read write };
 
 #!!!! This avc is allowed in the current policy
 allow kernel_generic_helper_t unlabeled_t:dir { getattr mounton search };
