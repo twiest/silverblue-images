@@ -3,7 +3,7 @@ Description=Install ZFS specific selinux policy
 
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/semodule -i /usr/share/selinux/packages/twiest-zfs-snapshot-mount.pp.bz2
+ExecStart=/usr/sbin/semodule -i /usr/share/selinux/packages/twiest-zfs.pp
 
 [Install]
 WantedBy=multi-user.target
