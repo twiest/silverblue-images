@@ -33,5 +33,10 @@ RUN rpm-ostree install \
     rm -vrf /var && \
     ostree container commit
 
+# Install tailscale
+RUN cd /etc/yum.repos.d/ && curl -LO https://pkgs.tailscale.com/stable/fedora/tailscale.repo && \
+    rpm-ostree install tailscale && \
+    ostree container commit
+
 RUN echo "Defaults timestamp_timeout=1200" > /etc/sudoers.d/timeout && \
     chmod 660 /etc/sudoers.d/timeout
