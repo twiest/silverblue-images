@@ -6,17 +6,19 @@ RUN rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-3$(rpm --eval
     rm -vrf /var /*.rpm && \
     ostree container commit
 
-# Install ZFS build deps
+# Install dkms deps
 RUN rpm-ostree install \
     kernel-devel kernel-devel-matched kernel-headers kernel-srpm-macros && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
 
-# TODO: Remove the following line once this bug is fixed: https://github.com/coreos/rpm-ostree/issues/4201
+# TODO: Remove the following line once these bugs are fixed:
+# - https://github.com/coreos/rpm-ostree/issues/4201
+# - https://github.com/coreos/rpm-ostree/issues/1614
 RUN test -f /usr/bin/ld || ln -s /usr/bin/ld.bfd /usr/bin/ld
 
-# Install zfs
+# Install zfs and tell dkms to install the module
 RUN rpm-ostree install zfs && \
     dkms autoinstall -k $(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}') && \
     # cleanup and verification stage
@@ -29,5 +31,7 @@ ADD files/twiest-zfs.pp.bz2 /usr/share/selinux/packages/twiest-zfs.pp.bz2
 ADD files/twiest-zfs-selinux.service /etc/systemd/system/twiest-zfs-selinux.service
 RUN ln -s /etc/systemd/system/twiest-zfs-selinux.service /etc/systemd/system/multi-user.target.wants/twiest-zfs-selinux.service
 
-# TODO: Remove the following line once this bug is fixed: https://github.com/coreos/rpm-ostree/issues/4201
+# TODO: Remove the following line once these bugs are fixed:
+# - https://github.com/coreos/rpm-ostree/issues/4201
+# - https://github.com/coreos/rpm-ostree/issues/1614
 RUN test -h /usr/bin/ld && rm -v /usr/bin/ld
