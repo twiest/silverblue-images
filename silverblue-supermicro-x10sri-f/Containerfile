@@ -15,8 +15,7 @@ RUN INSTALL_K3S_SKIP_START=true \
     INSTALL_K3S_VERSION=v1.27.4+k3s1 \
     INSTALL_K3S_SKIP_ENABLE=true \
     INSTALL_K3S_BIN_DIR=/usr/bin \
-    bash -x /usr/bin/k3s-install.sh && \
-    ln -s /usr/bin/kubectl /usr/bin/k
+    bash -x /usr/bin/k3s-install.sh
 
 # Get rid of both install and uninstall. Image build handles both of these. Also do the final seal.
 RUN rm /usr/bin/k3s-uninstall.sh /usr/bin/k3s-install.sh && \
