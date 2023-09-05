@@ -8,27 +8,14 @@ RUN rpm-ostree install nut && \
 
 # k3s install script
 ADD files/k3s-install.sh /usr/bin/k3s-install.sh
-ADD files/rancher-k3s-common.repo /etc/yum.repos.d/rancher-k3s-common.repo
-
-# Needed by k3s
-RUN rpm-ostree install -y container-selinux k3s-selinux-1.4-1.coreos.noarch && \
-    # cleanup and verification stage
-    rm -vrf /var && \
-    ostree container commit
-
-# Locking to a specific version
-RUN curl -o /usr/bin/k3s -sfL 'https://github.com/k3s-io/k3s/releases/download/v1.27.4+k3s1/k3s' && \
-    chmod +x /usr/bin/k3s
-
-RUN hash_bin=$(sha256sum /usr/bin/k3s) && \
-    test "$hash_bin" == "7438aade7f5aaab3904f95333b67aa072cee28fa06748b6ee66ebcbd3e5b6bd3  /usr/bin/k3s"
 
 # Run the install script. Not much should need to be done.
 RUN INSTALL_K3S_SKIP_START=true \
     INSTALL_K3S_VERSION=v1.27.4+k3s1 \
-    INSTALL_K3S_SKIP_DOWNLOAD=true \
+    INSTALL_K3S_SKIP_ENABLE=true \
     INSTALL_K3S_BIN_DIR=/usr/bin \
-    bash -x /usr/bin/k3s-install.sh
+    bash -x /usr/bin/k3s-install.sh && \
+    ln -s /usr/bin/kubectl /usr/bin/k
 
 # Get rid of both install and uninstall. Handled by image build. Do final seal.
 RUN rm /usr/bin/k3s-uninstall.sh /usr/bin/k3s-install.sh && \
