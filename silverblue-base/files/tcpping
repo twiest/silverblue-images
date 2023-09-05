@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+  echo "Usage: $(basename $0) <host> <port>"
+  exit 10
+fi
+
+nc -z "$1" "$2"
