@@ -48,8 +48,8 @@ RUN echo 'add_dracutmodules+=" zfs "' > /etc/dracut.conf.d/zfs.conf && \
 RUN export KERNEL_VERSION="$(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')" && \
     mkdir -p /var/tmp/dracut /var/roothome && \
     dracut --reproducible -v --add 'ostree' --tmpdir '/var/tmp/dracut' -f --no-hostonly --kver "${KERNEL_VERSION}" && \
-    mv "/lib/modules/${KERNEL_VERSION}/initramfs.img" "/lib/modules/${KERNEL_VERSION}/initramfs.orig.img" && \
-    mv /boot/initramfs*.img "/lib/modules/${KERNEL_VERSION}/initramfs.img" && \
+    mv -v "/lib/modules/${KERNEL_VERSION}/initramfs.img" "/lib/modules/${KERNEL_VERSION}/initramfs.orig.img" && \
+    mv -v /boot/initramfs*.img "/lib/modules/${KERNEL_VERSION}/initramfs.img" && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
