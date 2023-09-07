@@ -1,8 +1,22 @@
 [Unit]
 Description=Service to Setup Samsung USB SSD Trim Support
 DefaultDependencies=no
-Requires=systemd-udev-settle.service
 ConditionVirtualization=!container
+
+# From multipathd-configure.service
+#Before=iscsi.service iscsid.service lvm2-activation-early.service
+#Wants=systemd-udev-trigger.service systemd-udev-settle.service local-fs-pre.target
+#After=systemd-udev-trigger.service systemd-udev-settle.service
+#Before=local-fs-pre.target
+
+# From zfs-import-scan.service
+Requires=systemd-udev-settle.service
+After=systemd-udev-settle.service
+After=multipathd.service
+Before=cryptsetup.target
+
+
+
 
 [Service]
 Type=oneshot
