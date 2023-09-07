@@ -26,9 +26,10 @@ RUN rpm-ostree install zfs zfs-dracut && \
     ostree container commit
 
 # Add samsung usb udev rules so that dracut picks them up (makes trim work)
-COPY files/dracut/01systemd-samsung-usb-ssd-trim /usr/lib/dracut/modules.d/01systemd-samsung-usb-ssd-trim/
 COPY files/dracut/10samsung-usb-udev /usr/lib/dracut/modules.d/10samsung-usb-udev/
-ADD files/dracut/fix-samsung-usb.sh /usr/bin/fix-samsung-usb.sh
+
+# Add samsung usb udev rules for post boot trim to work
+ADD  files/dracut/10samsung-usb-udev/10-samsung-usb.rules /etc/udev/rules.d/10-samsung-usb.rules
 
 # Fix selinux so that it allows zfs to mount snapshots
 ADD files/selinux/twiest-zfs.pp /usr/share/selinux/packages/
@@ -46,16 +47,22 @@ RUN rpm-ostree install lsscsi busybox rng-tools dmraid nvme-cli biosdevname devi
 RUN echo 'add_dracutmodules+=" zfs "' > /etc/dracut.conf.d/zfs.conf && \
     echo 'force_drivers+=" zfs "' >> /etc/dracut.conf.d/zfs.conf
 
-## Setup dracut / put zfs module in initrd
+# Run dracut to build a new initrd
 RUN export KERNEL_VERSION="$(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')" && \
-    mkdir -p /var/tmp/dracut /var/roothome && \
-    dracut --reproducible -v --add 'ostree' --tmpdir '/var/tmp/dracut' -f --no-hostonly --kver "${KERNEL_VERSION}" && \
-    mv -v "/lib/modules/${KERNEL_VERSION}/initramfs.img" "/lib/modules/${KERNEL_VERSION}/initramfs.orig.img" && \
-    mv -v /boot/initramfs*.img "/lib/modules/${KERNEL_VERSION}/initramfs.img" && \
-    # cleanup and verification stage
-    rm -vrf /var && \
+    stock_arguments=$(lsinitrd "/lib/modules/${KERNEL_VERSION}/initramfs.img"  | grep '^Arguments: ' | sed 's/^Arguments: //') && \
+    mkdir -p /tmp/dracut /var/roothome && \
+    bash <(/usr/bin/echo "dracut $stock_arguments") && \
+    rm -rf /var/* /tmp/*  && \
     ostree container commit
 
+# Move the new initrd into place while keeping the stock initrd in the image for reference.
+RUN export KERNEL_VERSION="$(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')" && \
+    mv -v "/lib/modules/${KERNEL_VERSION}/initramfs.img" "/lib/modules/${KERNEL_VERSION}/initramfs.stock.img" && \
+    mv -v /boot/initramfs*.img "/lib/modules/${KERNEL_VERSION}/initramfs.img" && \
+    ostree container commit
+
+# Show that the initrd includes the samsung udev rules service:
+RUN lsinitrd /lib/modules/*/initramfs.img | grep 10-samsung-usb.rules
 
 # TODO: Remove the following line once these bugs are fixed:
 # - https://github.com/coreos/rpm-ostree/issues/4201
