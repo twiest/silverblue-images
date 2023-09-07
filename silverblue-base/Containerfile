@@ -28,7 +28,7 @@ RUN rpm-ostree install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-
 RUN rpm-ostree install \
     distrobox iotop screen snapper strace terminator thunderbird vim gnome-tweak-tool neofetch fuse-encfs borgbackup \
     cheese vlc seahorse htop rclone inxi fio cracklib-dicts hwinfo gst ipmitool pv fuse-sshfs nvme-cli nc etckeeper \
-    podman-docker docker-compose smartmontools gsmartcontrol hdparm zstd pbzip2 lz4 easyeffects android-tools && \
+    podman-docker docker-compose smartmontools gsmartcontrol hdparm zstd pbzip2 lz4 easyeffects android-tools wireguard-tools && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
