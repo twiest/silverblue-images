@@ -1,0 +1,9 @@
+[Unit]
+Description=Service to show where here is in the initrd process
+DefaultDependencies=no
+Before=systemd-udevd.service
+ConditionVirtualization=!container
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/echo ------------------------------here------------------------------

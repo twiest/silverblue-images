@@ -26,8 +26,8 @@ RUN rpm-ostree install zfs zfs-dracut && \
     ostree container commit
 
 # Add samsung usb udev rules so that dracut picks them up (makes trim work)
-ADD files/dracut/10-samsung-usb.rules /usr/lib/dracut/modules.d/10samsung/
-ADD files/dracut/module-setup.sh /usr/lib/dracut/modules.d/10samsung/
+COPY files/dracut/01systemd-here /usr/lib/dracut/modules.d/01systemd-here/
+COPY files/dracut/10samsung-usb-udev /usr/lib/dracut/modules.d/10samsung-usb-udev/
 
 # Fix selinux so that it allows zfs to mount snapshots
 ADD files/selinux/twiest-zfs.pp /usr/share/selinux/packages/
