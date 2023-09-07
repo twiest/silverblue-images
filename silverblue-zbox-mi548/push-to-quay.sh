@@ -3,6 +3,7 @@
 RED='\033[0;31m'
 NO_COLOR='\033[0m'
 
+set -eou pipefail
 
 err_report() {
     echo
@@ -19,7 +20,5 @@ cd $(dirname $0)
 IMGNAME=$(basename $PWD)
 DATESTAMP=$(date +%Y-%m-%d)
 
-time podman build $@ . -t "${IMGNAME}:${DATESTAMP}" \
-                       -t "$IMGNAME:latest" \
-                       -t "quay.io/thwiest/$IMGNAME:${DATESTAMP}" \
-                       -t "quay.io/thwiest/$IMGNAME:latest"
+podman push "quay.io/thwiest/$IMGNAME:latest"
+podman push "quay.io/thwiest/$IMGNAME:${DATESTAMP}"
