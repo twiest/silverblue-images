@@ -37,5 +37,6 @@ install() {
     inst_libdir_file opensc-pkcs11.so
 
     #$SYSTEMCTL -q --root "$initdir" add-wants sysinit.target here.service
-    $SYSTEMCTL -q --root "$initdir" add-wants slices.target samsung-usb-ssd-trim.service
+    #$SYSTEMCTL -q --root "$initdir" add-wants slices.target samsung-usb-ssd-trim.service
+    $SYSTEMCTL -q --root "$initdir" add-wants cryptsetup.target samsung-usb-ssd-trim.service
 }
