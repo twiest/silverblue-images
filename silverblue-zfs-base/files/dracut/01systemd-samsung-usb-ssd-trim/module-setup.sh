@@ -31,10 +31,11 @@ depends() {
 }
 
 install() {
-    inst rngd
-    inst_simple "${moddir}/here.service" "${systemdsystemunitdir}/here.service"
+    inst_multiple lsscsi fix-samsung-usb.sh
+    inst_simple "${moddir}/samsung-usb-ssd-trim.service" "${systemdsystemunitdir}/samsung-usb-ssd-trim.service"
     # make sure dependant libs are installed too
     inst_libdir_file opensc-pkcs11.so
 
-    $SYSTEMCTL -q --root "$initdir" add-wants sysinit.target here.service
+    #$SYSTEMCTL -q --root "$initdir" add-wants sysinit.target here.service
+    $SYSTEMCTL -q --root "$initdir" add-wants slices.target samsung-usb-ssd-trim.service
 }

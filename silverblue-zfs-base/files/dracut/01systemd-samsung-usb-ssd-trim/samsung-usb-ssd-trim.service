@@ -1,0 +1,9 @@
+[Unit]
+Description=Service to Setup Samsung USB SSD Trim Support
+DefaultDependencies=no
+Before=systemd-udevd.service
+ConditionVirtualization=!container
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/fix-samsung-usb.sh
