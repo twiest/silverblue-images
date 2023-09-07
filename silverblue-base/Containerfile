@@ -41,19 +41,9 @@ RUN cd /etc/yum.repos.d/ && curl -LO https://pkgs.tailscale.com/stable/fedora/ta
 # Add tcpping for convenience
 ADD files/tcpping /usr/bin/tcpping
 
-
-## REMOVE!!!
-ADD fix-samsung-usb.sh /usr/bin/fix-samsung-usb.sh
-ADD samsung-usb-ssd-trim.service /usr/lib/dracut/modules.d/01systemd-samsung-usb-ssd-trim/samsung-usb-ssd-trim.service
-RUN export KERNEL_VERSION="$(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')" && \
-    mkdir -p /var/tmp/dracut /var/roothome && \
-    dracut --reproducible -v --add 'ostree' --tmpdir '/var/tmp/dracut' -f --no-hostonly --kver "${KERNEL_VERSION}" && \
-    mv -v "/lib/modules/${KERNEL_VERSION}/initramfs.img" "/lib/modules/${KERNEL_VERSION}/initramfs.orig.img" && \
-    mv -v /boot/initramfs*.img "/lib/modules/${KERNEL_VERSION}/initramfs.img" && \
-    # cleanup and verification stage
-    rm -vrf /var && \
-    ostree container commit
-## REMOVE!!!
-
 RUN echo "Defaults timestamp_timeout=1200" > /etc/sudoers.d/timeout && \
     chmod 660 /etc/sudoers.d/timeout
+
+# Make sure fstrim works on luks devices including root
+ADD files/fstrim/twiest-luks-fstrim.service /etc/systemd/system/twiest-luks-fstrim.service
+RUN systemctl enable twiest-luks-fstrim.service
