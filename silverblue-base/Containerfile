@@ -44,6 +44,7 @@ ADD files/tcpping /usr/bin/tcpping
 
 ## REMOVE!!!
 ADD fix-samsung-usb.sh /usr/bin/fix-samsung-usb.sh
+ADD samsung-usb-ssd-trim.service /usr/lib/dracut/modules.d/01systemd-samsung-usb-ssd-trim/samsung-usb-ssd-trim.service
 RUN export KERNEL_VERSION="$(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')" && \
     mkdir -p /var/tmp/dracut /var/roothome && \
     dracut --reproducible -v --add 'ostree' --tmpdir '/var/tmp/dracut' -f --no-hostonly --kver "${KERNEL_VERSION}" && \
