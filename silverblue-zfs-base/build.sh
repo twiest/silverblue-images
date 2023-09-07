@@ -3,6 +3,8 @@
 RED='\033[0;31m'
 NO_COLOR='\033[0m'
 
+set -eou pipefail
+
 
 err_report() {
     echo
@@ -16,7 +18,7 @@ trap 'err_report $? $LINENO' ERR
 
 cd $(dirname $0)
 
-files/build.sh
+files/selinux/build.sh
 
 IMGNAME=$(basename $PWD)
 DATESTAMP=$(date +%Y-%m-%d)

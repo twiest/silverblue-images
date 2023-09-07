@@ -3,14 +3,14 @@ module twiest-zfs 1.0;
 
 require {
 	type sysctl_rpc_t;
-	type mnt_t;
-	type unlabeled_t;
-	type kernel_generic_helper_t;
 	type mount_exec_t;
-	type fs_t;
+	type kernel_generic_helper_t;
+	type mount_var_run_t;
+	type unlabeled_t;
 	type proc_net_t;
 	type device_t;
-	type mount_var_run_t;
+	type fs_t;
+	type mnt_t;
 	class file { execute execute_no_trans getattr map open read write };
 	class lnk_file read;
 	class dir { getattr mounton search };
