@@ -1,0 +1,9 @@
+[Unit]
+Description=Run config.d.service hourly
+
+[Timer]
+OnBootSec=15min
+OnCalendar=hourly
+
+[Install]
+WantedBy=multi-user.target
