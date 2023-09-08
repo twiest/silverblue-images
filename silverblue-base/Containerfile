@@ -51,5 +51,4 @@ ADD files/config.d/config.d.sh /usr/bin
 RUN systemctl enable config.d.timer
 
 # Make sure fstrim works on luks devices including root
-ADD files/fstrim/twiest-luks-fstrim.service /etc/systemd/system/twiest-luks-fstrim.service
-RUN systemctl enable twiest-luks-fstrim.service
+ADD files/config.d/00-add-luks-fstrim-kargs.sh /etc/config.d/00-add-luks-fstrim-kargs.sh

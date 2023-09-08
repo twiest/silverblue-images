@@ -1,9 +1,0 @@
-[Unit]
-Description=Ensure that luks is configured to allow fstrim operations
-
-[Service]
-Type=oneshot
-ExecStart=rpm-ostree kargs --append-if-missing=rd.luks.options=discard
-
-[Install]
-WantedBy=multi-user.target
