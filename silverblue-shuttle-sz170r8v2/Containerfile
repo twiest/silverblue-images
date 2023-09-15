@@ -5,7 +5,7 @@ ADD dnf /usr/bin/dnf
 
 # Install nvidia drivers
 RUN rpm-ostree install \
-    akmod-nvidia nvtop glmark2 && \
+    akmod-nvidia xorg-x11-drv-nvidia-cuda nvtop glmark2 && \
     install-nvidia-akmod.sh && \
     #cleanup and verification stage
     rm -rf /var /usr/bin/install-nvidia-akmod.sh /usr/bin/dnf && \
