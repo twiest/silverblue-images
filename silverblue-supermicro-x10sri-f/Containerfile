@@ -1,5 +1,8 @@
 FROM ghcr.io/twiest/silverblue-base:latest
 
+RUN mkdir /fun && \
+    ostree container commit
+
 # Install UPS software
 RUN rpm-ostree install nut baobab && \
     # cleanup and verification stage
