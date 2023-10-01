@@ -5,4 +5,4 @@ if [ $# -ne 2 ]; then
   exit 10
 fi
 
-nc -z "$1" "$2"
+nc -zv "$1" "$2"

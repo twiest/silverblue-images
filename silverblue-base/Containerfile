@@ -29,6 +29,7 @@ RUN rpm-ostree install \
     distrobox iotop screen snapper strace terminator thunderbird vim gnome-tweak-tool neofetch fuse-encfs borgbackup keepassxc \
     cheese vlc seahorse htop rclone inxi fio cracklib-dicts hwinfo gst ipmitool pv fuse-sshfs nvme-cli nc etckeeper \
     podman-docker docker-compose smartmontools gsmartcontrol hdparm zstd pbzip2 lz4 easyeffects android-tools wireguard-tools && \
+    ln -vsf /usr/bin/ncat /usr/bin/nc && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
