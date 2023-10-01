@@ -1,4 +1,5 @@
-FROM ubuntu:latest as builder
+# ALWAYS use the latest LTS to avoid compatibility issues
+FROM ubuntu:22.04 as builder
 
 RUN cd /tmp && \
     apt update && \
