@@ -1,6 +1,9 @@
 #
 # /etc/udev/rules.d/10-samsung-usb.rules
 #
+# Original instructions from:
+#     https://www.jeffgeerling.com/blog/2020/enabling-trim-on-external-ssd-on-raspberry-pi
+#
 # reload udev rules with:
 #   udevadm control --reload-rules && udevadm trigger
 # 
