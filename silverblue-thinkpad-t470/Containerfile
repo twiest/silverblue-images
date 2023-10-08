@@ -1,3 +1,24 @@
+FROM fedora:38 as builder
+
+# Setup dnf
+RUN dnf install -y dnf-plugins-core && \
+    dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo && \
+    rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc && \
+    dnf clean metadata
+
+# Download the brave-keyring rpm
+RUN cd /root && \
+    dnf download brave-browser brave-keyring liberation-fonts && \
+    dnf -y install rpmrebuild && \
+    dnf clean metadata
+
+# Rebuild the brave-keyring rpm (needs to be rebuilt without %post to make it compatible with silverblue)
+RUN cd /root && \
+    rpmrebuild --package --change-files='echo > "$RPMREBUILD_TMPDIR/work/post.1"' -d ./new_pkg/ brave-keyring*.rpm && \
+    ls -la --color /root/new_pkg/noarch
+
+
+
 FROM ghcr.io/twiest/silverblue-base:latest
 
 ADD copr-tigro-python-validity.repo /etc/yum.repos.d/
@@ -19,13 +40,23 @@ RUN rpm-ostree install fprintd-clients fprintd-clients-pam open-fprintd python3-
     rm -vrf /var && \
     ostree container commit
 
+# Install rebuilt / silverblue compatible brave-keyring
+COPY --from=builder /root/new_pkg/noarch/brave-keyring*.rpm /tmp
+RUN rpm-ostree install /tmp/brave-keyring*.rpm && \
+    rm /tmp/brave-keyring*.rpm && \
+    # cleanup and verification stage
+    rm -vrf /var && \
+    ostree container commit
+
+
 ## Add fingerprint files
 #ADD python-validity/6_07f_lenovo_mis_qm.xpfwext /usr/share/python-validity/
 #ADD python-validity/backoff /usr/share/python-validity/
 #ADD python-validity/calib-data.bin /usr/share/python-validity/
 
 # Install non-distro apps
-RUN rpm-ostree install brave-browser && \
+RUN rm -v /opt && mkdir -p /usr/opt && ln -vs /usr/opt /opt && \
+    rpm-ostree install brave-browser && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
