@@ -13,13 +13,19 @@ RUN rpm-ostree uninstall fprintd-pam fprintd && \
     rm -vrf /var && \
     ostree container commit
 
-# Install apps, including fingerprint utils
-RUN rpm-ostree install brave-browser fprintd-clients fprintd-clients-pam open-fprintd python3-validity && \
+# Install fingerprint utils
+RUN rpm-ostree install fprintd-clients fprintd-clients-pam open-fprintd python3-validity && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
 
-# Add fingerprint files
-ADD python-validity/6_07f_lenovo_mis_qm.xpfwext /usr/share/python-validity/
-ADD python-validity/backoff /usr/share/python-validity/
-ADD python-validity/calib-data.bin /usr/share/python-validity/
+## Add fingerprint files
+#ADD python-validity/6_07f_lenovo_mis_qm.xpfwext /usr/share/python-validity/
+#ADD python-validity/backoff /usr/share/python-validity/
+#ADD python-validity/calib-data.bin /usr/share/python-validity/
+
+# Install non-distro apps
+RUN rpm-ostree install brave-browser && \
+    # cleanup and verification stage
+    rm -vrf /var && \
+    ostree container commit
