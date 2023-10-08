@@ -55,8 +55,10 @@ RUN rpm-ostree install /tmp/brave-keyring*.rpm && \
 #ADD python-validity/calib-data.bin /usr/share/python-validity/
 
 # Install non-distro apps
-RUN rm -v /opt && mkdir -p /usr/opt && ln -vs /usr/opt /opt && \
+RUN mkdir -p /var/opt && \
     rpm-ostree install brave-browser && \
+    mv /var/opt/brave.com /usr/lib/brave.com && \
+    echo 'L /opt/brave.com - - - - ../../usr/lib/brave.com' > /usr/lib/tmpfiles.d/brave.com.conf && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
