@@ -2,14 +2,19 @@ FROM ghcr.io/twiest/silverblue-base:latest
 
 ADD copr-tigro-python-validity.repo /etc/yum.repos.d/
 
+# Add brave repo
+RUN dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/x86_64/ && \
+    rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc && \
+    dnf clean all
+
 ## Remove incompatible fingerprint utils
 RUN rpm-ostree uninstall fprintd-pam fprintd && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
 
-# Install fingerprint utils
-RUN rpm-ostree install fprintd-clients fprintd-clients-pam open-fprintd python3-validity && \
+# Install apps, including fingerprint utils
+RUN rpm-ostree install brave-browser fprintd-clients fprintd-clients-pam open-fprintd python3-validity && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
