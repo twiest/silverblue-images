@@ -43,7 +43,7 @@ RUN rpm-ostree install fprintd-clients fprintd-clients-pam open-fprintd python3-
 # python-validity still wants to write to usr. This sets up symlinks so that it goes to /var instead.
 RUN mv /usr/share/python-validity/playground /usr/share/python-validity-playground && \
     rm -vrf /usr/share/python-validity && \
-    ln -s /var/run/python-validity /usr/share/python-validity
+    ln -s /var/cache/python-validity /usr/share/python-validity
 
 # Install rebuilt / silverblue compatible brave-keyring
 COPY --from=builder /root/new_pkg/noarch/brave-keyring*.rpm /tmp
