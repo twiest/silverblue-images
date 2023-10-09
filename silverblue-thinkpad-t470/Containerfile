@@ -45,7 +45,9 @@ RUN mv /usr/share/python-validity/playground /usr/share/python-validity-playgrou
     rm -vrf /usr/share/python-validity && \
     ln -s /var/cache/python-validity /usr/share/python-validity && \
     sed -i 's#^ExecStart=/usr/lib/python-validity/dbus-service --debug$#ExecStart=/usr/lib/python-validity/dbus-service#' /usr/lib/systemd/system/python3-validity.service && \
-    echo 'D /var/cache/python-validity 0755 root root -' > /usr/lib/tmpfiles.d/python-validity.conf && \
+    echo 'd /var/cache/python-validity 0755 root root -' > /usr/lib/tmpfiles.d/python-validity.conf && \
+    echo 'f /var/cache/python-validity/backoff 0644 root root -' >> /usr/lib/tmpfiles.d/python-validity.conf && \
+    echo 'f /var/cache/python-validity/calib-data.bin 0644 root root -' >> /usr/lib/tmpfiles.d/python-validity.conf && \
     echo 'L /var/cache/python-validity/playground - - - - /usr/share/python-validity-playground' >> /usr/lib/tmpfiles.d/python-validity.conf
 
 # Install rebuilt / silverblue compatible brave-keyring
