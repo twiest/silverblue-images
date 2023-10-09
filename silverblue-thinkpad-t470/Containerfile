@@ -36,6 +36,7 @@ RUN rpm-ostree uninstall fprintd-pam fprintd && \
 
 # Install fingerprint utils
 RUN rpm-ostree install fprintd-clients fprintd-clients-pam open-fprintd python3-validity && \
+    systemctl enable python3-validity && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
