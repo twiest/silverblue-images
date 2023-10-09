@@ -40,6 +40,11 @@ RUN rpm-ostree install fprintd-clients fprintd-clients-pam open-fprintd python3-
     rm -vrf /var && \
     ostree container commit
 
+# python-validity still wants to write to usr. This sets up symlinks so that it goes to /var instead.
+RUN mv /usr/share/python-validity/playground /usr/share/python-validity-playground && \
+    rm -vrf /usr/share/python-validity && \
+    ln -s /var/run/python-validity /usr/share/python-validity
+
 # Install rebuilt / silverblue compatible brave-keyring
 COPY --from=builder /root/new_pkg/noarch/brave-keyring*.rpm /tmp
 RUN rpm-ostree install /tmp/brave-keyring*.rpm && \
@@ -47,7 +52,6 @@ RUN rpm-ostree install /tmp/brave-keyring*.rpm && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
-
 
 ## Add fingerprint files
 #ADD python-validity/6_07f_lenovo_mis_qm.xpfwext /usr/share/python-validity/
