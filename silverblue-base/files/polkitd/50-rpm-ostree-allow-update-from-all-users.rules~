@@ -1,0 +1,5 @@
+polkit.addRule(function(action, subject) {
+  if (action.id == “org.projectatomic.rpmostree1.upgrade” || “org.projectatomic.rpmostree1.deploy”) {
+    return polkit.Result.YES;
+  }
+});

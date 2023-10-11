@@ -52,5 +52,8 @@ ADD files/config.d/config.d.service /etc/systemd/system
 ADD files/config.d/config.d.sh /usr/bin
 RUN systemctl enable config.d.timer
 
+# Add polkit files
+ADD files/polkitd/50-twiest-rpm-ostree-allow-update-from-all-users.rules /usr/share/polkit-1/rules.d
+
 # Make sure fstrim works on luks devices including root
 ADD files/config.d/00-add-luks-fstrim-kargs.sh /etc/config.d/00-add-luks-fstrim-kargs.sh
