@@ -26,6 +26,8 @@ RUN rpm-ostree install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-
     ostree container commit
 
 # Install the basics
+# TODO: evaluate restic as a multi-threaded possible replacement for borg once restic reaches 1.0 status
+#       https://github.com/restic/restic
 RUN rpm-ostree install \
     distrobox iotop screen snapper strace terminator thunderbird vim gnome-tweak-tool neofetch fuse-encfs borgbackup \
     keepassxc vlc seahorse htop rclone inxi fio cracklib-dicts hwinfo gst ipmitool pv fuse-sshfs nvme-cli nc \
