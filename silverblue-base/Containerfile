@@ -32,7 +32,7 @@ RUN rpm-ostree install \
     distrobox iotop screen snapper strace terminator thunderbird vim gnome-tweak-tool neofetch fuse-encfs borgbackup \
     keepassxc vlc seahorse htop rclone inxi fio cracklib-dicts hwinfo gst ipmitool pv fuse-sshfs nvme-cli nc \
     etckeeper sg3_utils lshw podman-docker docker-compose smartmontools gsmartcontrol hdparm zstd pbzip2 lz4 \
-    udisks2-btrfs udisks2-lvm2 udisks2-zram udisks2-iscsi easyeffects android-tools wireguard-tools && \
+    udisks2-btrfs udisks2-lvm2 udisks2-zram udisks2-iscsi easyeffects android-tools wireguard-tools iperf && \
     ln -vsf /usr/bin/ncat /usr/bin/nc && \
     # cleanup and verification stage
     rm -vrf /var && \
