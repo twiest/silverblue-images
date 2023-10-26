@@ -19,7 +19,9 @@ RUN rpm-ostree install \
 RUN test -f /usr/bin/ld || ln -s /usr/bin/ld.bfd /usr/bin/ld
 
 # Install zfs and tell dkms to install the module
-RUN rpm-ostree install zfs zfs-dracut && \
+# NOTE: Locking to 2.1.x for now
+# TODO: Switch this to 2.2.x once it has proven itself in the field
+RUN rpm-ostree install zfs-2.1.\* zfs-dracut-2.1.\* && \
     dkms autoinstall -k $(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}') && \
     # cleanup and verification stage
     rm -vrf /var && \
