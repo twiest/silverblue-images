@@ -60,3 +60,10 @@ ADD files/polkitd/50-twiest-rpm-ostree-allow-update-from-all-users.rules /usr/sh
 
 # Make sure fstrim works on luks devices including root
 ADD files/config.d/00-add-luks-fstrim-kargs.sh /etc/config.d/00-add-luks-fstrim-kargs.sh
+
+# Set vim as default editor
+RUN rm /etc/profile.d/nano-default-editor.sh
+ADD files/profile.d/vim-default-editor.sh /etc/profile.d/vim-default-editor.sh
+
+# Enable git prompt
+ADD files/profile.d/git-prompt.sh /etc/profile.d/git-prompt.sh
