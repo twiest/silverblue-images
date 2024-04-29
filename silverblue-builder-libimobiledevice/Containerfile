@@ -1,0 +1,17 @@
+FROM docker.io/library/ubuntu:23.10
+
+LABEL com.github.containers.toolbox=true
+
+
+# libimobiledevice build deps
+RUN apt update && \
+    DEBIAN_FRONTEND=noninteractive TZ=America/New_York apt install -y sudo git pkg-config build-essential checkinstall autoconf automake libtool-bin libssl-dev libusb-1.0-0-dev cython3 libzip-dev libcurl4-openssl-dev libfuse-dev libreadline-dev libxml2-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Script to build libimobiledevice
+ADD files/limd-build-linux.sh /usr/local/bin
+
+# libimobiledevice build
+RUN mkdir /tmp/workdir && \
+    cd /tmp/workdir && \
+    RUN_AS_ROOT=1 PREFIX=/opt/libimobiledevice /usr/local/bin/limd-build-linux.sh
