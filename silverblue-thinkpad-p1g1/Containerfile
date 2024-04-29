@@ -1,8 +1,5 @@
 FROM ghcr.io/twiest/silverblue-builder-libimobiledevice:latest as builder
 
 FROM ghcr.io/twiest/silverblue-base:latest
-COPY --from=builder /opt/libimobiledevice /opt/libimobiledevice
-RUN ( \
-      echo export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/libimobiledevice/lib && \
-      echo export PATH=$PATH:/opt/libimobiledevice/bin \
-    ) > /etc/profile.d/libimobiledevice.sh
+COPY --from=builder /usr/local /usr
+COPY --from=builder /usr/local/lib /usr/lib64
