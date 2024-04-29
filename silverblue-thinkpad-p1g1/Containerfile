@@ -1,6 +1,1 @@
 FROM ghcr.io/twiest/silverblue-base:latest
-
-# Add base distro tools
-RUN rpm-ostree install libimobiledevice-utils ifuse && \
-    rm -vrf /var && \
-    ostree container commit
