@@ -2,7 +2,11 @@ FROM ghcr.io/twiest/silverblue-builder-libimobiledevice:latest as builder
 
 FROM ghcr.io/twiest/silverblue-base:latest
 
-RUN rpm -evh --nodeps libplist libusbmuxd libimobiledevice usbmuxd
+# This removes the originals. Trying without removing first.
+#RUN rpm -evh --nodeps libplist libusbmuxd libimobiledevice usbmuxd
 
-COPY --from=builder /usr/local /usr
-COPY --from=builder /usr/local/lib /usr/lib64
+COPY --from=builder /build/bin /usr/bin
+COPY --from=builder /build/sbin /usr/sbin
+COPY --from=builder /build/lib /usr/lib
+COPY --from=builder /build/lib /usr/lib64
+COPY --from=builder /build/share /usr/share

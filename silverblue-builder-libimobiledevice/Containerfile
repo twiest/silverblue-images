@@ -13,4 +13,4 @@ ADD files/limd-build-linux.sh /usr/local/bin
 # libimobiledevice build
 RUN mkdir /tmp/workdir && \
     cd /tmp/workdir && \
-    RUN_AS_ROOT=1 /usr/local/bin/limd-build-linux.sh
+    RUN_AS_ROOT=1 PREFIX=/build /usr/local/bin/limd-build-linux.sh
