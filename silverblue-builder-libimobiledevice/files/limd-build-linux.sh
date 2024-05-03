@@ -25,25 +25,26 @@ fi
 
  echo -e "${BOLD}**** libimobiledevice stack build script for Linux, revision $REV ****${NORMAL}"
 
-if test -x `which apt-get`; then
-  # debian based distro
-  echo -e "${WHITE}Checking dependencies...${NORMAL}"
-  PKGS="build-essential checkinstall git autoconf automake libtool-bin libssl-dev libusb-1.0-0-dev pkg-config cython3 libzip-dev libcurl4-openssl-dev libfuse-dev"
-  for P in $PKGS; do
-    CHECK=`apt list --installed $P 2>/dev/null |grep installed`
-    if test -z "$CHECK"; then
-      TO_BE_INSTALLED="$TO_BE_INSTALLED $P"
-    fi
-  done
-  if test -z "$TO_BE_INSTALLED"; then
-    echo -e "${WHITE}All dependencies installed${NORMAL}"
-  else
-    echo -e "${WHITE}Installing missing dependencies${NORMAL}"
-    sudo apt-get install $TO_BE_INSTALLED || exit 1
-  fi
-else
-  echo -e "${RED}WARNING: Unknown package mananger, make sure to manually install the required build dependencies.${NORMAL}"
-fi
+#if test -x `which dnf`; then
+#  # debian based distro
+#  echo -e "${WHITE}Checking dependencies...${NORMAL}"
+#  #PKGS="build-essential checkinstall git autoconf automake libtool-bin libssl-dev libusb-1.0-0-dev pkg-config cython3 libzip-dev libcurl4-openssl-dev libfuse-dev"
+#  PKGS="git autoconf automake libtool-bin libssl-dev libusb-1.0-0-dev pkg-config cython3 libzip-dev libcurl4-openssl-dev libfuse-dev"
+#  for P in $PKGS; do
+#    CHECK=`rpm -q $P 2>/dev/null |grep $P`
+#    if test -z "$CHECK"; then
+#      TO_BE_INSTALLED="$TO_BE_INSTALLED $P"
+#    fi
+#  done
+#  if test -z "$TO_BE_INSTALLED"; then
+#    echo -e "${WHITE}All dependencies installed${NORMAL}"
+#  else
+#    echo -e "${WHITE}Installing missing dependencies${NORMAL}"
+#    sudo dnf install -y $TO_BE_INSTALLED || exit 1
+#  fi
+#else
+#  echo -e "${RED}WARNING: Unknown package mananger, make sure to manually install the required build dependencies.${NORMAL}"
+#fi
 
 if test $UID -eq 0; then
   if test -z $RUN_AS_ROOT; then
