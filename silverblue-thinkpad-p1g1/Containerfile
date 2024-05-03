@@ -1,8 +1,8 @@
 FROM ghcr.io/twiest/silverblue-builder-libimobiledevice:latest as builder
 
 FROM ghcr.io/twiest/silverblue-base:latest
-RUN rpm-ostree uninstall -y libimobiledevice usbmuxd
 
+RUN rpm -evh --nodeps libplist libusbmuxd libimobiledevice usbmuxd
 
 COPY --from=builder /usr/local /usr
 COPY --from=builder /usr/local/lib /usr/lib64
