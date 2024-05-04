@@ -1,12 +1,8 @@
 # Description
 
-I build this package using the included spec file in the tar ball.
+To build the rpm, run build-sanoid-rpm.sh
 
-I built it in a podman container like so:
-podman run -it --rm -v $PWD:/build:z fedora:38 bash
+The rpm will be placed in this directory
 
-rpmbuild --target noarch -bb sanoid.spec
-
-
-I use this walkthrough to figure out the correct setup / commands:
+I use this walkthrough to figure out the correct setup / commands to build the rpm:
 https://opensource.com/article/18/9/how-build-rpm-packages
