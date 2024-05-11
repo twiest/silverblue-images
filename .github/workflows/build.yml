@@ -332,3 +332,29 @@ jobs:
           password: ${{ env.REGISTRY_PASSWORD }}
           extra-args: |
             --disable-content-trust
+  silverblue-ace-t8-pro:
+    needs: silverblue-base-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Build container image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: "silverblue-ace-t8-pro"
+          containerfiles: "silverblue-ace-t8-pro/Containerfile"
+          image: silverblue-ace-t8-pro
+          layers: false
+          oci: true
+
+      - name: Push to ghcr.io
+        uses: redhat-actions/push-to-registry@v2.6
+        with:
+          image: silverblue-ace-t8-pro
+          tags: "latest"
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          extra-args: |
+            --disable-content-trust
