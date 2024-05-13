@@ -1,6 +1,6 @@
 #!/bin/bash
 
-configd_dirs="/etc/config.d /usr/local/etc/config.d /usr/local/etc/config.d/$(hostname)"
+configd_dirs="/etc/config.d /usr/local/etc/config.d/all /usr/local/etc/config.d/$(hostname)"
 
 for configd_dir in $configd_dirs; do
   if [ ! -d "$configd_dir" ]; then
