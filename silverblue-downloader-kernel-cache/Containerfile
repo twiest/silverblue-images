@@ -1,0 +1,10 @@
+FROM fedora:40 AS downloader
+
+RUN dnf install -y skopeo jq dnf-plugins-core && \
+    dnf clean all
+
+COPY files/download-kernels.sh /tmp
+RUN /tmp/download-kernels.sh
+
+FROM scratch
+COPY --from=downloader /tmp/rpms /rpms
