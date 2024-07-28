@@ -21,7 +21,6 @@ RUN rpm-ostree install /rpms/kernel*.rpm && \
 
 # Install ZFS repository
 RUN rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-5$(rpm --eval "%{dist}").noarch.rpm && \
-    # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
 
@@ -33,7 +32,6 @@ RUN test -f /usr/bin/ld || ln -s /usr/bin/ld.bfd /usr/bin/ld
 # Install zfs and tell dkms to install the module
 RUN rpm-ostree install zfs zfs-dracut && \
     dkms autoinstall -k $(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}') && \
-    # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
 
@@ -49,15 +47,8 @@ ADD  files/dracut/10samsung-usb-udev/10-samsung-usb.rules /etc/udev/rules.d/10-s
 # Add silicon power udev rules for post boot trim to work
 ADD  files/dracut/20silicon-power-udev/20-silicon-power.rules /etc/udev/rules.d/20-silicon-power.rules
 
-# Fix selinux so that it allows zfs to mount snapshots
-ADD files/selinux/twiest-zfs.pp /usr/share/selinux/packages/
-ADD files/selinux/twiest-zfs.pp.bz2 /usr/share/selinux/packages/
-ADD files/selinux/twiest-zfs-selinux.service /etc/systemd/system/
-RUN systemctl enable twiest-zfs-selinux
-
 # Install dracut requirements
 RUN rpm-ostree install lsscsi busybox rng-tools dmraid nvme-cli biosdevname device-mapper-multipath && \
-    # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
 
@@ -93,3 +84,10 @@ ADD files/sanoid/sanoid-2.2.0-1.fc40.noarch.rpm /root
 RUN rpm-ostree install /root/sanoid-*.rpm && \
     rm -rf /var/* /tmp/*  && \
     ostree container commit
+
+# Fix selinux so that it allows zfs to mount snapshots
+ADD files/selinux/twiest-zfs.pp /usr/share/selinux/packages/
+ADD files/selinux/twiest-zfs.pp.bz2 /usr/share/selinux/packages/
+ADD files/selinux/twiest-zfs-selinux.service /etc/systemd/system/
+RUN systemctl enable twiest-zfs-selinux
+
