@@ -13,7 +13,7 @@ env:
   REGISTRY_PASSWORD: ${{ github.token }}
 
 jobs:
-  silverblue-downloader-kernel-cache-build:
+  silverblue-shared-downloader-kernel-cache-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -22,16 +22,16 @@ jobs:
       - name: Build container image
         uses: redhat-actions/buildah-build@v2
         with:
-          context: "silverblue-downloader-kernel-cache"
-          containerfiles: "silverblue-downloader-kernel-cache/Containerfile"
-          image: silverblue-downloader-kernel-cache
+          context: "silverblue-shared-downloader-kernel-cache"
+          containerfiles: "silverblue-shared-downloader-kernel-cache/Containerfile"
+          image: silverblue-shared-downloader-kernel-cache
           layers: false
           oci: true
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: silverblue-downloader-kernel-cache
+          image: silverblue-shared-downloader-kernel-cache
           tags: "latest"
           registry: ${{ env.IMAGE_REGISTRY }}
           username: ${{ env.REGISTRY_USER }}

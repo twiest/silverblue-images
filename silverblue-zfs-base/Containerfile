@@ -1,4 +1,4 @@
-FROM ghcr.io/twiest/silverblue-downloader-kernel-cache:latest as rpms
+FROM ghcr.io/twiest/silverblue-shared-downloader-kernel-cache:latest as rpms
 
 
 FROM quay.io/fedora/fedora-silverblue:40
