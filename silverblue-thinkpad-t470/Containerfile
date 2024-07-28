@@ -1,4 +1,4 @@
-FROM fedora:38 as builder
+FROM fedora:40 as builder
 
 # Setup dnf
 RUN dnf install -y dnf-plugins-core && \
