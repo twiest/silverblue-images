@@ -1,8 +1,8 @@
-FROM ghcr.io/twiest/silverblue-shared-builder-brave:latest as builder
+FROM ghcr.io/twiest/silverblue-shared-builder-brave:latest as builder-brave
+
+FROM ghcr.io/twiest/silverblue-shared-builder-python-validity:latest as builder-python-validity
 
 FROM ghcr.io/twiest/silverblue-base:latest
-
-ADD copr-tigro-python-validity.repo /etc/yum.repos.d/
 
 # Add brave repo
 RUN dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/x86_64/ && \
@@ -11,15 +11,17 @@ RUN dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com
 
 ## Remove incompatible fingerprint utils
 RUN rpm-ostree uninstall fprintd-pam fprintd && \
-    # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
 
 # Install fingerprint utils
-RUN rpm-ostree install fprintd-clients fprintd-clients-pam open-fprintd python3-validity && \
+COPY --from=builder-python-validity /rpms /tmp/python-validity-rpms
+RUN rpm-ostree install /tmp/python-validity-rpms/fprintd-clients-*.rpm \
+                       /tmp/python-validity-rpms/fprintd-clients-pam-*.rpm \
+                       /tmp/python-validity-rpms/open-fprintd-*.rpm \
+                       /tmp/python-validity-rpms/python3-validity-*.rpm && \
     systemctl enable python3-validity && \
-    # cleanup and verification stage
-    rm -vrf /var && \
+    rm -vrf /tmp/python-validity-rpms /var && \
     ostree container commit
 
 # python-validity still wants to write to usr. This sets up symlinks so that it goes to /var instead.
@@ -33,23 +35,15 @@ RUN mv /usr/share/python-validity/playground /usr/share/python-validity-playgrou
     echo 'L /var/lib/python-validity/playground - - - - /usr/share/python-validity-playground' >> /usr/lib/tmpfiles.d/python-validity.conf
 
 # Install rebuilt / silverblue compatible brave-keyring
-COPY --from=builder /rpms/brave-keyring*.rpm /tmp
-RUN rpm-ostree install /tmp/brave-keyring*.rpm && \
-    rm /tmp/brave-keyring*.rpm && \
-    # cleanup and verification stage
-    rm -vrf /var && \
+COPY --from=builder-brave /rpms /tmp/brave-rpms
+RUN rpm-ostree install /tmp/brave-rpms/brave-keyring-*.rpm && \
+    rm -vrf /var /tmp/brave-rpms && \
     ostree container commit
-
-## Add fingerprint files
-#ADD python-validity/6_07f_lenovo_mis_qm.xpfwext /usr/share/python-validity/
-#ADD python-validity/backoff /usr/share/python-validity/
-#ADD python-validity/calib-data.bin /usr/share/python-validity/
 
 # Install non-distro apps
 RUN mkdir -p /var/opt && \
     rpm-ostree install brave-browser && \
     mv /var/opt/brave.com /usr/lib/brave.com && \
     echo 'L /opt/brave.com - - - - ../../usr/lib/brave.com' > /usr/lib/tmpfiles.d/brave.com.conf && \
-    # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
