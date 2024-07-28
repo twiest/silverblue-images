@@ -144,7 +144,7 @@ jobs:
             --disable-content-trust
 
   silverblue-shuttle-sz170r8v2:
-    needs: silverblue-base-build
+    needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -171,7 +171,7 @@ jobs:
             --disable-content-trust
 
   silverblue-supermicro-x10sri-f:
-    needs: silverblue-base-build
+    needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -198,7 +198,7 @@ jobs:
             --disable-content-trust
 
   silverblue-supermicro-x10drw-it:
-    needs: silverblue-base-build
+    needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -225,7 +225,7 @@ jobs:
             --disable-content-trust
 
   silverblue-thinkpad-p1g1:
-    needs: silverblue-base-build
+    needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -252,7 +252,7 @@ jobs:
             --disable-content-trust
 
   silverblue-thinkpad-p1g5:
-    needs: silverblue-base-build
+    needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -279,7 +279,7 @@ jobs:
             --disable-content-trust
 
   silverblue-thinkpad-t470:
-    needs: silverblue-base-build
+    needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -306,7 +306,7 @@ jobs:
             --disable-content-trust
 
   silverblue-zbox-mi548:
-    needs: silverblue-base-build
+    needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -333,7 +333,7 @@ jobs:
             --disable-content-trust
 
   silverblue-orico:
-    needs: silverblue-base-build
+    needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -359,7 +359,7 @@ jobs:
           extra-args: |
             --disable-content-trust
   silverblue-dell-precision-5570:
-    needs: silverblue-base-build
+    needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -385,7 +385,7 @@ jobs:
           extra-args: |
             --disable-content-trust
   silverblue-ace-t8-pro:
-    needs: silverblue-base-build
+    needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
