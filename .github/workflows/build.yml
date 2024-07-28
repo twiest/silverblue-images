@@ -13,7 +13,7 @@ env:
   REGISTRY_PASSWORD: ${{ github.token }}
 
 jobs:
-  silverblue-shared-downloader-kernel-cache-build:
+  silverblue-shared-downloader-kernel-cache:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -39,7 +39,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-shared-builder-brave-build:
+  silverblue-shared-builder-brave:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -65,7 +65,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-shared-builder-python-validity-build:
+  silverblue-shared-builder-python-validity:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -91,7 +91,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-zfs-base-build:
+  silverblue-zfs-base:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -117,7 +117,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-base-build:
+  silverblue-base:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -143,7 +143,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-shuttle-sz170r8v2-build:
+  silverblue-shuttle-sz170r8v2:
     needs: silverblue-base-build
     runs-on: ubuntu-latest
     steps:
@@ -170,7 +170,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-supermicro-x10sri-f-build:
+  silverblue-supermicro-x10sri-f:
     needs: silverblue-base-build
     runs-on: ubuntu-latest
     steps:
@@ -197,7 +197,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-supermicro-x10drw-it-build:
+  silverblue-supermicro-x10drw-it:
     needs: silverblue-base-build
     runs-on: ubuntu-latest
     steps:
@@ -224,7 +224,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-thinkpad-p1g1-build:
+  silverblue-thinkpad-p1g1:
     needs: silverblue-base-build
     runs-on: ubuntu-latest
     steps:
@@ -251,7 +251,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-thinkpad-p1g5-build:
+  silverblue-thinkpad-p1g5:
     needs: silverblue-base-build
     runs-on: ubuntu-latest
     steps:
@@ -278,7 +278,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-thinkpad-t470-build:
+  silverblue-thinkpad-t470:
     needs: silverblue-base-build
     runs-on: ubuntu-latest
     steps:
@@ -332,7 +332,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-orico-build:
+  silverblue-orico:
     needs: silverblue-base-build
     runs-on: ubuntu-latest
     steps:

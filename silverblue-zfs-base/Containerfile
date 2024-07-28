@@ -3,11 +3,11 @@ FROM ghcr.io/twiest/silverblue-shared-downloader-kernel-cache:latest as rpms
 
 FROM quay.io/fedora/fedora-silverblue:40
 
-# Remove current kernel
-RUN rpm -evh --nodeps kernel-modules-core kernel-core kernel-modules kernel kernel-modules-extra && \
+# Remove current kernel (nice way, then ugly way)
+RUN rpm-ostree uninstall kernel-modules-core kernel-core kernel-modules kernel kernel-modules-extra && \
+    rpm -evh --nodeps kernel-debug-core kernel-debug-modules-core && \
     rm -vrf /var /rpms && \
     ostree container commit
-
 
 # Add coreos kernel
 COPY --from=rpms /rpms /rpms
