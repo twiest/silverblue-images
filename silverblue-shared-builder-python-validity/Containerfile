@@ -1,0 +1,29 @@
+FROM fedora:40 as builder
+
+RUN dnf install -y tree wget rpm-build checkpolicy policycoreutils python3-devel python3-setuptools \
+                   dbus-glib-devel gcc gcc-c++ gettext git gtk-doc libfprint-devel meson pam-devel \
+                   perl-podlators polkit-devel python3-dbusmock python3-libpamtest systemd-devel \
+                   selinux-policy selinux-policy-devel selinux-policy-targeted systemd-rpm-macros && \
+    dnf clean all
+
+# Install the source RPMs
+RUN mkdir -p /root/rpmbuild/SOURCES /root/rpmbuild/BUILDROOT && \
+    rpm -ivh https://download.copr.fedorainfracloud.org/results/tigro/python-validity/fedora-38-x86_64/05739175-python-validity/python-validity-0.14-2.fc38.src.rpm \
+             https://download.copr.fedorainfracloud.org/results/tigro/python-validity/fedora-38-x86_64/05739127-fprintd-clients/fprintd-clients-1.94.2-2.fc38.src.rpm \
+             https://download.copr.fedorainfracloud.org/results/tigro/python-validity/fedora-38-x86_64/05739185-open-fprintd/open-fprintd-0.6-7.fc38.src.rpm
+
+# Build the RPMs
+RUN rpmbuild -bb /root/rpmbuild/SPECS/fprintd-clients.spec /root/rpmbuild/SPECS/open-fprintd.spec \
+                 /root/rpmbuild/SPECS/python-validity.spec
+
+# Remove unwanted rpms
+RUN rm /root/rpmbuild/RPMS/x86_64/*debug*.rpm \
+       /root/rpmbuild/RPMS/noarch/*devel*.rpm && \
+    mkdir /rpms && \
+    mv /root/rpmbuild/RPMS/noarch/*.rpm /rpms && \
+    mv /root/rpmbuild/RPMS/x86_64/*.rpm /rpms && \
+    ls -la --color /rpms
+
+
+FROM scratch
+COPY --from=builder /rpms /rpms
