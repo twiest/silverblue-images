@@ -39,7 +39,7 @@ dnf download -y "${kernel_headers_pkg_base}/kernel-headers-${kernel_headers_vers
 
 # Download the rest of the kernel packages
 kernel_pkg_base="https://kojipkgs.fedoraproject.org/packages/kernel/${kernel_major}.${kernel_minor}.${kernel_patch}/${kernel_distro_magic}.${kernel_distro}/${kernel_arch}"
-for pkg in kernel kernel-modules kernel-modules-core kernel-modules-extra kernel-devel kernel-devel-matched kernel-uki-virt kernel-debug-core kernel-debug-modules-core; do
+for pkg in kernel kernel-modules kernel-modules-core kernel-modules-extra kernel-devel kernel-devel-matched kernel-uki-virt ; do
   echo "Running: dnf download -y ${kernel_pkg_base}/${pkg}-$kernel_version.rpm"
   dnf download -y "${kernel_pkg_base}/${pkg}-$kernel_version.rpm"
   echo
