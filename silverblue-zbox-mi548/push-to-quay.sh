@@ -3,7 +3,7 @@
 RED='\033[0;31m'
 NO_COLOR='\033[0m'
 
-set -eou pipefail
+set -euo pipefail
 
 err_report() {
     echo

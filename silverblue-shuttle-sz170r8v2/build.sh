@@ -3,7 +3,7 @@
 RED='\033[0;31m'
 NO_COLOR='\033[0m'
 
-set -eou pipefail
+set -euo pipefail
 
 
 err_report() {
@@ -21,4 +21,4 @@ cd $(dirname $0)
 IMGNAME=$(basename $PWD)
 DATESTAMP=$(date +%Y-%m-%d)
 
-time podman build $@ . -t "${IMGNAME}:${DATESTAMP}" -t "$IMGNAME:latest"
+time podman build $@ . -t "${IMGNAME}:${DATESTAMP}" -t "${IMGNAME}:latest" -t "ghcr.io/twiest/${IMGNAME}:latest"

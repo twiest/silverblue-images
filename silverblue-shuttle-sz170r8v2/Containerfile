@@ -1,12 +1,15 @@
 FROM ghcr.io/twiest/silverblue-base:latest
 
-ADD install-nvidia-akmod.sh /usr/bin/install-nvidia-akmod.sh
-ADD dnf /usr/bin/dnf
+ADD files/install-nvidia-akmod.sh /usr/bin/install-nvidia-akmod.sh
+ADD files/dnf /usr/bin/dnf
 
 # Install nvidia drivers
 RUN rpm-ostree install \
     akmod-nvidia xorg-x11-drv-nvidia-cuda nvtop glmark2 && \
-    install-nvidia-akmod.sh && \
-    #cleanup and verification stage
+    rm -rf /var && \
+    ostree container commit
+
+# Create nvidia akmods
+RUN install-nvidia-akmod.sh && \
     rm -rf /var /usr/bin/install-nvidia-akmod.sh /usr/bin/dnf && \
     ostree container commit

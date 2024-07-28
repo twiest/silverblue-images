@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 mkdir -p /var/log/akmods /var/tmp /run/akmods
 chmod --reference=/tmp /var/tmp
 
