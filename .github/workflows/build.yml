@@ -65,7 +65,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-shared-builder-python-validity-brave:
+  silverblue-shared-builder-python-validity-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
