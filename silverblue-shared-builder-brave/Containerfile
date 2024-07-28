@@ -1,0 +1,21 @@
+FROM fedora:40 as builder
+
+# Setup dnf
+RUN dnf install -y dnf-plugins-core && \
+    dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo && \
+    rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc && \
+    dnf clean metadata
+
+# Download the brave-keyring rpm
+RUN cd /root && \
+    dnf download brave-browser brave-keyring liberation-fonts && \
+    dnf -y install rpmrebuild && \
+    dnf clean metadata
+
+# Rebuild the brave-keyring rpm (needs to be rebuilt without %post to make it compatible with silverblue)
+RUN cd /root && \
+    rpmrebuild --package --change-files='echo > "$RPMREBUILD_TMPDIR/work/post.1"' -d ./new_pkg/ brave-keyring*.rpm && \
+    ls -la --color /root/new_pkg/noarch
+
+FROM scratch
+COPY --from=builder /root/new_pkg/noarch /rpms

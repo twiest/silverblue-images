@@ -1,23 +1,4 @@
-FROM fedora:40 as builder
-
-# Setup dnf
-RUN dnf install -y dnf-plugins-core && \
-    dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo && \
-    rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc && \
-    dnf clean metadata
-
-# Download the brave-keyring rpm
-RUN cd /root && \
-    dnf download brave-browser brave-keyring liberation-fonts && \
-    dnf -y install rpmrebuild && \
-    dnf clean metadata
-
-# Rebuild the brave-keyring rpm (needs to be rebuilt without %post to make it compatible with silverblue)
-RUN cd /root && \
-    rpmrebuild --package --change-files='echo > "$RPMREBUILD_TMPDIR/work/post.1"' -d ./new_pkg/ brave-keyring*.rpm && \
-    ls -la --color /root/new_pkg/noarch
-
-
+FROM ghcr.io/twiest/silverblue-shared-builder-brave:latest as builder
 
 FROM ghcr.io/twiest/silverblue-base:latest
 
@@ -52,7 +33,7 @@ RUN mv /usr/share/python-validity/playground /usr/share/python-validity-playgrou
     echo 'L /var/lib/python-validity/playground - - - - /usr/share/python-validity-playground' >> /usr/lib/tmpfiles.d/python-validity.conf
 
 # Install rebuilt / silverblue compatible brave-keyring
-COPY --from=builder /root/new_pkg/noarch/brave-keyring*.rpm /tmp
+COPY --from=builder /rpms/brave-keyring*.rpm /tmp
 RUN rpm-ostree install /tmp/brave-keyring*.rpm && \
     rm /tmp/brave-keyring*.rpm && \
     # cleanup and verification stage
