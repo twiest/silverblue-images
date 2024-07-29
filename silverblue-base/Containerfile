@@ -33,7 +33,7 @@ RUN rpm-ostree install \
     keepassxc seahorse htop rclone inxi fio cracklib-dicts hwinfo gst ipmitool pv fuse-sshfs nvme-cli nc \
     etckeeper sg3_utils lshw podman-docker docker-compose smartmontools gsmartcontrol hdparm zstd pbzip2 lz4 \
     udisks2-btrfs udisks2-lvm2 udisks2-iscsi easyeffects android-tools wireguard-tools iperf3 ansible meld && \
-    ln -vsf /usr/bin/ncat /usr/bin/nc vlc libavcodec-freeworld && \
+    ln -vsf /usr/bin/ncat /usr/bin/nc && \
     # cleanup and verification stage
     rm -vrf /var && \
     ostree container commit
@@ -67,3 +67,8 @@ ADD files/profile.d/vim-default-editor.sh /etc/profile.d/vim-default-editor.sh
 
 # Enable git prompt
 ADD files/profile.d/git-prompt.sh /etc/profile.d/git-prompt.sh
+
+# Fedora now ships vlc, but without h264 codec. This adds the codec.
+RUN rpm-ostree install vlc libavcodec-freeworld && \
+    rm -vrf /var && \
+    ostree container commit
