@@ -8,16 +8,19 @@ RUN rpm-ostree install nut baobab && \
 
 # Add the audited k3s install script.
 #     "curl -sfL https://get.k3s.io | sh -" is lame.
-ADD files/k3s-install.sh /usr/bin/k3s-install.sh
+ADD files/k3s-install.orig.sh /usr/bin/k3s-install.orig.sh
 ADD files/k3s-setup-firewall.sh /usr/bin/k3s-setup-firewall.sh
+
+# Make the k3s install script know that this is an rpm-ostree based system
+RUN echo ID_LIKE="coreos" >> /usr/lib/os-release
 
 # Install k3s
 RUN INSTALL_K3S_SKIP_START=true \
-    INSTALL_K3S_VERSION=v1.27.4+k3s1 \
+    INSTALL_K3S_VERSION=v1.30.2+k3s2 \
     INSTALL_K3S_SKIP_ENABLE=true \
     INSTALL_K3S_BIN_DIR=/usr/bin \
-    bash -x /usr/bin/k3s-install.sh
+    bash -x /usr/bin/k3s-install.orig.sh
 
 # Get rid of both install and uninstall. Image build handles both of these. Also do the final seal.
-RUN rm /usr/bin/k3s-uninstall.sh /usr/bin/k3s-install.sh && \
+RUN rm /usr/bin/k3s-uninstall.sh /usr/bin/k3s-install.orig.sh && \
     ostree container commit
