@@ -1,6 +1,6 @@
 FROM fedora:40 AS downloader
 
-RUN dnf install -y skopeo jq dnf-plugins-core && \
+RUN dnf install -y dnf-plugins-core && \
     dnf clean all
 
 # Install ZFS repository
