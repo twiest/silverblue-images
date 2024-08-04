@@ -92,3 +92,8 @@ ADD files/sanoid/sanoid-2.2.0-1.fc40.noarch.rpm /root
 RUN rpm-ostree install /root/sanoid-*.rpm && \
     rm -rf /var/* /tmp/*  && \
     ostree container commit
+
+# Uninstall ZFS repository (speeds up rpm-ostree metadata operations)
+RUN rpm -evh zfs-release-2-5$(rpm --eval "%{dist}") && \
+    rm -vrf /var && \
+    ostree container commit
