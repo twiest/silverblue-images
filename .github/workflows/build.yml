@@ -411,7 +411,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  neosmay-xxx-ac8f-yyy:
+  silverblue-neosmay-xxx-ac8f-yyy:
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
@@ -421,16 +421,16 @@ jobs:
       - name: Build container image
         uses: redhat-actions/buildah-build@v2
         with:
-          context: "neosmay-xxx-ac8f-yyy"
-          containerfiles: "neosmay-xxx-ac8f-yyy/Containerfile"
-          image: neosmay-xxx-ac8f-yyy
+          context: "silverblue-neosmay-xxx-ac8f-yyy"
+          containerfiles: "silverblue-neosmay-xxx-ac8f-yyy/Containerfile"
+          image: silverblue-neosmay-xxx-ac8f-yyy
           layers: false
           oci: true
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.6
         with:
-          image: neosmay-xxx-ac8f-yyy
+          image: silverblue-neosmay-xxx-ac8f-yyy
           tags: "latest"
           registry: ${{ env.IMAGE_REGISTRY }}
           username: ${{ env.REGISTRY_USER }}
