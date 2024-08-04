@@ -5,13 +5,13 @@
 
 set -euo pipefail
 
-mkdir -p /tmp/rpms
-cd /tmp/rpms
-
-dnf download -y zfs zfs-dracut zfs-kmod
+dnf download -y zfs-dkms
 
 kernel_release=$(rpm -qp --requires zfs-dkms-*.rpm 2>/dev/null | awk '/kernel-devel <= / { blah = $3 } END { print blah }')
+rm zfs-dkms-*.rpm
 
+mkdir -p /tmp/rpms
+cd /tmp/rpms
 kernel_arch=x86_64
 kernel_major=$(echo "$kernel_release" | cut -d '.' -f 1)
 kernel_minor=$(echo "$kernel_release" | cut -d '.' -f 2)
