@@ -28,7 +28,7 @@ RUN mkdir -p /var/roothome && \
     ostree container commit
 
 # Install ZFS repository
-RUN rpm-ostree install https://zfsonlinux.org/fedora/zfs-release-2-5$(rpm --eval "%{dist}").noarch.rpm && \
+RUN rpm-ostree install /rpms/zfs-release-*.rpm && \
     rm -vrf /var && \
     ostree container commit
 

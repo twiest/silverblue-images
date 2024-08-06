@@ -3,9 +3,6 @@ FROM fedora:40 AS downloader
 RUN dnf install -y dnf-plugins-core && \
     dnf clean all
 
-# Install ZFS repository
-RUN dnf install -y https://zfsonlinux.org/fedora/zfs-release-2-5$(rpm --eval "%{dist}").noarch.rpm
-
 COPY files/download-kernels.sh /tmp
 RUN /tmp/download-kernels.sh
 

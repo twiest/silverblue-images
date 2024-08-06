@@ -5,13 +5,25 @@
 
 set -euo pipefail
 
-dnf download -y zfs-dkms
+# Make the area where the rpms will live
+mkdir -p /tmp/rpms
+cd /tmp/rpms
+
+
+# Install ZFS repository
+zfs_release_pkg="https://zfsonlinux.org/fedora/zfs-release-2-5$(rpm --eval "%{dist}").noarch.rpm"
+dnf install -y "${zfs_release_pkg}"
+
+# Download zfs-dkm and the zfs-release. The zfs-release rpm will be saved in the image.
+dnf download -y zfs-dkms "${zfs_release_pkg}"
+
+ls -la
+
+
 
 kernel_release=$(rpm -qp --requires zfs-dkms-*.rpm 2>/dev/null | awk '/kernel-devel <= / { blah = $3 } END { print blah }')
 rm zfs-dkms-*.rpm
 
-mkdir -p /tmp/rpms
-cd /tmp/rpms
 kernel_arch=x86_64
 kernel_major=$(echo "$kernel_release" | cut -d '.' -f 1)
 kernel_minor=$(echo "$kernel_release" | cut -d '.' -f 2)
