@@ -53,7 +53,7 @@ for kernel_headers_patch in $(seq ${kernel_max_patch} -1 0); do
 done
 
 if [ $kernel_headers_patch -eq 0 ]; then
-  echo "FAILED: could not find kernel-core rpm"
+  echo "FAILED: could not find kernel-headers rpm. Last tried [$kernel_header_rpm_url]"
   exit 10
 fi
 
