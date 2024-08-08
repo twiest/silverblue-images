@@ -21,8 +21,11 @@ ls -la
 
 
 
+echo --------------------------------------------------------------------------------
+echo -n "Determining what's the highest kernel version that zfs-dkms supports... "
 kernel_release=$(rpm -qp --requires zfs-dkms-*.rpm 2>/dev/null | awk '/kernel-devel <= / { blah = $3 } END { print blah }')
 rm zfs-dkms-*.rpm
+echo "success! [$kernel_release]"
 
 kernel_arch=x86_64
 kernel_major=$(echo "$kernel_release" | cut -d '.' -f 1)
@@ -31,6 +34,7 @@ kernel_max_patch=30
 kernel_distro_magic=300
 kernel_distro=fc40
 max_kernel_headers_patch=25
+
 
 
 echo --------------------------------------------------------------------------------
@@ -71,7 +75,7 @@ if [ $kernel_patch -eq 0 ]; then
   exit 10
 fi
 
-echo "success!"
+echo "success! [$kernel_patch]"
 
 kernel_version=${kernel_major}.${kernel_minor}.${kernel_patch}-${kernel_distro_magic}.${kernel_distro}.${kernel_arch}
 kernel_pkg_base="https://kojipkgs.fedoraproject.org/packages/kernel/${kernel_major}.${kernel_minor}.${kernel_patch}/${kernel_distro_magic}.${kernel_distro}/${kernel_arch}"
