@@ -19,17 +19,12 @@ RUN rpm-ostree uninstall kernel-modules-core kernel-core kernel-modules kernel k
     rm -vrf /var /rpms && \
     ostree container commit
 
-# Add coreos kernel
+# Install coreos kernel and zfs-release
 COPY --from=rpms /rpms /rpms
 RUN ls -lah --color /rpms/
 RUN mkdir -p /var/roothome && \
-    rpm-ostree install /rpms/kernel*.rpm && \
+    rpm-ostree install /rpms/kernel*.rpm /rpms/zfs-release-*.rpm && \
     rm -vrf /var /rpms && \
-    ostree container commit
-
-# Install ZFS repository
-RUN rpm-ostree install /rpms/zfs-release-*.rpm && \
-    rm -vrf /var && \
     ostree container commit
 
 # TODO: Remove the following line once these bugs are fixed:
