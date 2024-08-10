@@ -23,6 +23,6 @@ for configd_dir in $configd_dirs; do
     echo "    Running [$script]"
 
     # Run the script and pre-pend padding so that it looks good in journald
-    bash "${script}" | sed 's/^/        /'
+    bash -c "${script}" | sed 's/^/        /'
   done
 done
