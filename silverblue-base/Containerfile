@@ -67,8 +67,3 @@ ADD files/profile.d/vim-default-editor.sh /etc/profile.d/vim-default-editor.sh
 
 # Enable git prompt
 ADD files/profile.d/git-prompt.sh /etc/profile.d/git-prompt.sh
-
-# Fedora now ships vlc, but without h264 codec. This adds the codec.
-RUN rpm-ostree install vlc libavcodec-freeworld && \
-    rm -vrf /var && \
-    ostree container commit
