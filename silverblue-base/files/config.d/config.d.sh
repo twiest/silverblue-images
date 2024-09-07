@@ -2,6 +2,7 @@
 
 configd_dirs="/etc/config.d /usr/local/etc/config.d/all /usr/local/etc/config.d/$(hostname)"
 
+script_exit_code=0
 for configd_dir in $configd_dirs; do
   if [ ! -d "$configd_dir" ]; then
     echo "Skipping [$configd_dir]... directory doesn't exist."
@@ -23,6 +24,13 @@ for configd_dir in $configd_dirs; do
     echo "    Running [$script]"
 
     # Run the script and pre-pend padding so that it looks good in journald
-    bash -c "${script}" | sed 's/^/        /'
+    /usr/bin/time -p bash -c "${script} 2>&1" 2>&1 | sed 's/^/        /'
+    retval=${PIPESTATUS[0]}
+
+    if [ $retval != 0 ]; then
+      script_exit_code=$retval
+    fi
   done
 done
+
+exit $script_exit_code
