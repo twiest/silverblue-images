@@ -1,10 +1,8 @@
 FROM ghcr.io/twiest/silverblue-base:latest
 
 # Install UPS software
-RUN rpm-ostree install nut baobab && \
-    # cleanup and verification stage
-    rm -vrf /var && \
-    ostree container commit
+RUN dnf install -y nut baobab && \
+    dnf clean all
 
 # Add the audited k3s install script.
 #     "curl -sfL https://get.k3s.io | sh -" is lame.
@@ -22,5 +20,4 @@ RUN INSTALL_K3S_SKIP_START=true \
     bash -x /usr/bin/k3s-install.orig.sh
 
 # Get rid of both install and uninstall. Image build handles both of these. Also do the final seal.
-RUN rm /usr/bin/k3s-uninstall.sh /usr/bin/k3s-install.orig.sh && \
-    ostree container commit
+RUN rm /usr/bin/k3s-uninstall.sh /usr/bin/k3s-install.orig.sh
