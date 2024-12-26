@@ -10,19 +10,17 @@ RUN dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com
     dnf clean all
 
 ## Remove incompatible fingerprint utils
-RUN rpm-ostree uninstall fprintd-pam fprintd && \
-    rm -vrf /var && \
-    ostree container commit
+RUN dnf remove -y fprintd-pam fprintd && \
+    dnf clean all
 
 # Install fingerprint utils
 COPY --from=builder-python-validity /rpms /tmp/python-validity-rpms
-RUN rpm-ostree install /tmp/python-validity-rpms/fprintd-clients-*.rpm \
+RUN dnf install -y /tmp/python-validity-rpms/fprintd-clients-*.rpm \
                        /tmp/python-validity-rpms/fprintd-clients-pam-*.rpm \
                        /tmp/python-validity-rpms/open-fprintd-*.rpm \
                        /tmp/python-validity-rpms/python3-validity-*.rpm && \
     systemctl enable python3-validity && \
-    rm -vrf /tmp/python-validity-rpms /var && \
-    ostree container commit
+    dnf clean all
 
 # python-validity still wants to write to usr. This sets up symlinks so that it goes to /var instead.
 RUN mv /usr/share/python-validity/playground /usr/share/python-validity-playground && \
@@ -36,14 +34,12 @@ RUN mv /usr/share/python-validity/playground /usr/share/python-validity-playgrou
 
 # Install rebuilt / silverblue compatible brave-keyring
 COPY --from=builder-brave /rpms /tmp/brave-rpms
-RUN rpm-ostree install /tmp/brave-rpms/brave-keyring-*.rpm && \
-    rm -vrf /var /tmp/brave-rpms && \
-    ostree container commit
+RUN dnf install -y /tmp/brave-rpms/brave-keyring-*.rpm && \
+    dnf clean all
 
 # Install non-distro apps
 RUN mkdir -p /var/opt && \
-    rpm-ostree install brave-browser && \
+    dnf install -y brave-browser && \
     mv /var/opt/brave.com /usr/lib/brave.com && \
     echo 'L /opt/brave.com - - - - ../../usr/lib/brave.com' > /usr/lib/tmpfiles.d/brave.com.conf && \
-    rm -vrf /var && \
-    ostree container commit
+    dnf clean all
