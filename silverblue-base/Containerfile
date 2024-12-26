@@ -12,23 +12,21 @@ FROM ghcr.io/twiest/silverblue-zfs-base:latest
 
 COPY --from=builder /tmp/gocryptfs*.rpm /tmp
 
-RUN rpm-ostree install /tmp/gocryptfs*.rpm && \
+RUN dnf install -y /tmp/gocryptfs*.rpm && \
     rm /tmp/gocryptfs*.rpm && \
     # cleanup and verification stage
-    rm -vrf /var && \
-    ostree container commit
+    dnf clean all
 
 # Install rpmfusion repos
-RUN rpm-ostree install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm && \
-    rpm-ostree install https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
+RUN dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm && \
+    dnf install -y https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
     # cleanup and verification stage
-    rm -vrf /var && \
-    ostree container commit
+    dnf clean all
 
 # Install the basics
 # TODO: evaluate restic as a multi-threaded possible replacement for borg once restic reaches 1.0 status
 #       https://github.com/restic/restic
-RUN rpm-ostree install \
+RUN dnf install -y \
     distrobox iotop screen snapper strace terminator thunderbird vim gnome-tweak-tool neofetch fuse-encfs borgbackup \
     keepassxc seahorse htop rclone inxi fio cracklib-dicts hwinfo gst ipmitool pv fuse-sshfs nvme-cli nc firewall-config \
     etckeeper sg3_utils lshw podman-docker docker-compose smartmontools gsmartcontrol hdparm zstd pbzip2 lz4 \
@@ -36,13 +34,12 @@ RUN rpm-ostree install \
     gdouros-symbola-fonts gdisk && \
     ln -vsf /usr/bin/ncat /usr/bin/nc && \
     # cleanup and verification stage
-    rm -vrf /var && \
-    ostree container commit
+    dnf clean all
 
 # Install tailscale
 RUN cd /etc/yum.repos.d/ && curl -LO https://pkgs.tailscale.com/stable/fedora/tailscale.repo && \
-    rpm-ostree install tailscale && \
-    ostree container commit
+    dnf install -y tailscale && \
+    dnf clean all
 
 # Add tcpping for convenience
 ADD files/cli/tcpping /usr/bin/tcpping
