@@ -2,11 +2,6 @@ FROM ghcr.io/twiest/silverblue-base:latest
 
 ADD files/install-nvidia-akmod.sh /usr/bin/install-nvidia-akmod.sh
 
-# First install bootc and dnf (not currently included in Fedroa 40)
-# Adapted from: https://github.com/jmarrero/kinoite-setup/blob/main/Containerfile
-# TODO: Remove this once we move to a version of fedora where it's included by default
-RUN rpm-ostree install bootc dnf5 dnf5-plugins && ln -sf /usr/bin/dnf5 /usr/bin/dnf
-
 # Install nvidia drivers
 RUN dnf install -y akmod-nvidia xorg-x11-drv-nvidia-cuda nvtop glmark2 && \
     dnf clean all
