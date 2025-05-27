@@ -68,11 +68,14 @@ cd /tmp/rpms
 
 
 # Install ZFS repository
-zfs_release_pkg="https://zfsonlinux.org/fedora/zfs-release-2-5$(rpm --eval "%{dist}").noarch.rpm"
+zfs_release_pkg="https://zfsonlinux.org/fedora/zfs-release-2-8$(rpm --eval "%{dist}").noarch.rpm"
 dnf install -y "${zfs_release_pkg}"
 
-# Download zfs-dkm and the zfs-release. The zfs-release rpm will be saved in the image.
-dnf download -y zfs-dkms "${zfs_release_pkg}"
+# Download zfs-dkm package.
+dnf download -y zfs-dkms
+
+# Download the zfs-release package. The zfs-release rpm needs to be downloaded separately because `dnf download` can't seem to find it.
+wget "${zfs_release_pkg}"
 
 ls -la
 
@@ -89,7 +92,7 @@ kernel_major=$(echo "$kernel_release" | cut -d '.' -f 1)
 kernel_minor=$(echo "$kernel_release" | cut -d '.' -f 2)
 kernel_max_patch=30
 kernel_max_distro_magic=5
-kernel_distro=fc40
+kernel_distro=fc41
 max_kernel_headers_patch=25
 
 
@@ -119,8 +122,8 @@ if [ $retval -ne 0 ]; then
 fi
 
 echo "success!"
-echo "Running: dnf download -y $kernel_header_rpm_url"
-dnf download -y $kernel_header_rpm_url
+echo "Running: wget $kernel_header_rpm_url"
+wget "$kernel_header_rpm_url"
 
 echo
 echo --------------------------------------------------------------------------------
@@ -158,8 +161,8 @@ echo "Downloading ZFS compatible kernels"
 echo
 kernel_pkg_base="https://kojipkgs.fedoraproject.org/packages/kernel/${kernel_major}.${kernel_minor}.${kernel_patch}/${kernel_distro_magic}.${kernel_distro}/${kernel_arch}"
 for pkg in kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-devel kernel-devel-matched kernel-uki-virt ; do
-  echo "Running: dnf download -y ${kernel_pkg_base}/${pkg}-$kernel_version.rpm"
-  dnf download -y "${kernel_pkg_base}/${pkg}-$kernel_version.rpm"
+  echo "Running: wget ${kernel_pkg_base}/${pkg}-$kernel_version.rpm"
+  wget "${kernel_pkg_base}/${pkg}-$kernel_version.rpm"
   echo
 done
 

@@ -1,6 +1,6 @@
-FROM fedora:40 AS downloader
+FROM fedora:41 AS downloader
 
-RUN dnf install -y dnf-plugins-core && \
+RUN dnf install -y dnf-plugins-core wget && \
     dnf clean all
 
 COPY files/download-kernels.sh /tmp
