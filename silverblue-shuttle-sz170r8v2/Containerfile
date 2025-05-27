@@ -9,3 +9,12 @@ RUN dnf install -y akmod-nvidia xorg-x11-drv-nvidia-cuda nvtop glmark2 && \
 # Create nvidia akmods
 RUN install-nvidia-akmod.sh && \
     rm -rf /var /usr/bin/install-nvidia-akmod.sh
+
+# Cleanup image for linting
+RUN test -f /usr/lib/sysusers.d/akmods.conf || echo -e 'g akmods 963\nu akmods 992 "User is used by akmods to build akmod packages" /var/cache/akmods /sbin/nologin' > /usr/lib/sysusers.d/akmods.conf
+
+RUN rm -rf /var && mkdir /var && \
+    rm -rf /boot && mkdir /boot
+
+# Verify image is good
+RUN bootc container lint --fatal-warnings --skip baseimage-composefs

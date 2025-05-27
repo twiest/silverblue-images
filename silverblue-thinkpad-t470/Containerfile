@@ -43,3 +43,10 @@ RUN mkdir -p /var/opt && \
     mv /var/opt/brave.com /usr/lib/brave.com && \
     echo 'L /opt/brave.com - - - - ../../usr/lib/brave.com' > /usr/lib/tmpfiles.d/brave.com.conf && \
     dnf clean all
+
+# Cleanup image for linting
+RUN rm -rf /var && mkdir /var && \
+    rm -rf /boot && mkdir /boot
+
+# Verify image is good
+RUN bootc container lint --fatal-warnings --skip baseimage-composefs

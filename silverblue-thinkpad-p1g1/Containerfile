@@ -1,1 +1,9 @@
 FROM ghcr.io/twiest/silverblue-base:latest
+
+# Cleanup image for linting
+RUN rm -rf /var && mkdir /var && \
+    rm -rf /boot && mkdir /boot
+
+# Verify image is good
+RUN bootc container lint --fatal-warnings --skip baseimage-composefs
+

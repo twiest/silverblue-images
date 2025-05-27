@@ -82,3 +82,12 @@ RUN dnf install -y /root/sanoid-*.rpm && \
 
 # Uninstall ZFS repository (speeds up dnf metadata operations)
 RUN rpm -evh zfs-release-2-8$(rpm --eval "%{dist}")
+
+# Cleanup image for linting
+RUN dnf remove -y rng-tools && \
+    sed -i '/rtlsdr/d' /etc/group && \
+    rm -rf /var && mkdir /var && \
+    rm -rf /boot && mkdir /boot
+
+# Verify image is good
+RUN bootc container lint --fatal-warnings --skip baseimage-composefs
