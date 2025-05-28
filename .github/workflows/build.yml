@@ -92,6 +92,7 @@ jobs:
             --disable-content-trust
 
   silverblue-zfs-base:
+    needs: silverblue-shared-downloader-kernel-cache
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -252,7 +253,7 @@ jobs:
             --disable-content-trust
 
   silverblue-thinkpad-t470:
-    needs: silverblue-base
+    needs: [silverblue-base, silverblue-shared-builder-brave, silverblue-shared-builder-python-validity]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
