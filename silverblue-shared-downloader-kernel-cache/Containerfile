@@ -1,6 +1,6 @@
-FROM fedora:41 AS downloader
+FROM fedora:42 AS downloader
 
-RUN dnf install -y dnf-plugins-core wget && \
+RUN dnf install -y dnf-plugins-core wget gawk && \
     dnf clean all
 
 COPY files/download-kernels.sh /tmp

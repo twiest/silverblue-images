@@ -87,12 +87,14 @@ kernel_release=$(rpm -qp --requires zfs-dkms-*.rpm 2>/dev/null | awk '/kernel-de
 rm zfs-dkms-*.rpm
 echo "success! [$kernel_release]"
 
+source /etc/os-release
+
 kernel_arch=x86_64
 kernel_major=$(echo "$kernel_release" | cut -d '.' -f 1)
 kernel_minor=$(echo "$kernel_release" | cut -d '.' -f 2)
 kernel_max_patch=30
 kernel_max_distro_magic=5
-kernel_distro=fc41
+kernel_distro="fc${VERSION_ID}"
 max_kernel_headers_patch=25
 
 

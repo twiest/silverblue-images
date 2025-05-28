@@ -1,4 +1,4 @@
-FROM fedora:41 as builder
+FROM fedora:42 as builder
 
 RUN dnf install -y tree wget rpm-build checkpolicy policycoreutils python3-devel python3-setuptools \
                    dbus-glib-devel gcc gcc-c++ gettext git gtk-doc libfprint-devel meson pam-devel \

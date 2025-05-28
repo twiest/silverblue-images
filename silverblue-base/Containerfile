@@ -69,7 +69,8 @@ ADD files/profile.d/git-prompt.sh /etc/profile.d/git-prompt.sh
 # Cleanup image for linting
 RUN test -f /usr/lib/sysusers.d/qemu.conf || echo -e 'g qemu 107\nu qemu 107 "qemu user" / /usr/sbin/nologin' > /usr/lib/sysusers.d/qemu.conf && \
     test -f /usr/lib/sysusers.d/libvirt.conf || echo -e 'g libvirt 963' > /usr/lib/sysusers.d/libvirt.conf && \
-    test -f /usr/lib/sysusers.d/screen.conf || echo -e 'g screen 84' > /usr/lib/sysusers.d/screen.conf
+    test -f /usr/lib/sysusers.d/screen.conf || echo -e 'g screen 84' > /usr/lib/sysusers.d/screen.conf && \
+    test -f /usr/lib/sysusers.d/qat.conf || echo -e 'g qat 995' > /usr/lib/sysusers.d/qat.conf
 
 RUN dnf remove -y glusterfs && \
     sed -i '/gluster/d' /etc/passwd && \

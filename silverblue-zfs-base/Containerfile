@@ -1,7 +1,7 @@
 FROM ghcr.io/twiest/silverblue-shared-downloader-kernel-cache:latest as rpms
 
 
-FROM quay.io/fedora/fedora-silverblue:41
+FROM quay.io/fedora/fedora-silverblue:42
 
 
 # Fix selinux so that it allows zfs to mount snapshots
@@ -48,7 +48,7 @@ ADD  files/dracut/10samsung-usb-udev/10-samsung-usb.rules /etc/udev/rules.d/10-s
 ADD  files/dracut/20silicon-power-udev/20-silicon-power.rules /etc/udev/rules.d/20-silicon-power.rules
 
 # Install dracut requirements
-RUN dnf install -y lsscsi busybox rng-tools dmraid nvme-cli biosdevname device-mapper-multipath && \
+RUN dnf install -y lsscsi busybox rng-tools biosdevname device-mapper-multipath && \
     dnf clean all
 
 # Setup zfs for inclusion in dracut
@@ -76,7 +76,7 @@ RUN export KERNEL_VERSION="$(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}
 RUN test -h /usr/bin/ld && rm -v /usr/bin/ld
 
 # Install sanoid from rpm
-ADD files/sanoid/sanoid-2.2.0-1.fc41.noarch.rpm /root
+ADD files/sanoid/sanoid-2.2.0-1.fc42.noarch.rpm /root
 RUN dnf install -y /root/sanoid-*.rpm && \
     dnf clean all
 
