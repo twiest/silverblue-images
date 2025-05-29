@@ -1,0 +1,6 @@
+FROM quay.io/centos-bootc/centos-bootc:stream10
+
+# Install zfs release package
+# https://openzfs.github.io/openzfs-docs/Getting%20Started/RHEL-based%20distro/index.html
+# Note: this does NOT work yet because OpenZFS doesn't yet support centos stream 10.
+RUN dnf install https://zfsonlinux.org/epel/zfs-release-2-3$(rpm --eval "%{dist}").noarch.rpm
