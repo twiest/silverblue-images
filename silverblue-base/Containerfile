@@ -24,7 +24,7 @@ RUN dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-rele
     dnf clean all
 
 # Install virtualization
-RUN dnf install -y @virtualization && \
+RUN dnf install -y @virtualization libvirt-daemon libvirt-daemon-driver-storage-disk && \
     dnf clean all
 
 # Install the basics
