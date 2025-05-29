@@ -23,6 +23,10 @@ RUN dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-rele
     # cleanup and verification stage
     dnf clean all
 
+# Install virtualization
+RUN dnf install -y @virtualization && \
+    dnf clean all
+
 # Install the basics
 # TODO: evaluate restic as a multi-threaded possible replacement for borg once restic reaches 1.0 status
 #       https://github.com/restic/restic
@@ -30,7 +34,7 @@ RUN dnf install -y \
     distrobox iotop screen snapper strace terminator thunderbird vim gnome-tweak-tool fastfetch fuse-encfs borgbackup \
     keepassxc seahorse htop rclone inxi fio cracklib-dicts hwinfo gst ipmitool pv fuse-sshfs nvme-cli nc firewall-config \
     etckeeper sg3_utils lshw podman-docker docker-compose smartmontools gsmartcontrol hdparm zstd pbzip2 lz4 \
-    udisks2-btrfs udisks2-lvm2 udisks2-iscsi easyeffects android-tools wireguard-tools iperf3 ansible meld virt-manager \
+    udisks2-btrfs udisks2-lvm2 udisks2-iscsi easyeffects android-tools wireguard-tools iperf3 ansible meld \
     gdouros-symbola-fonts gdisk && \
     ln -vsf /usr/bin/ncat /usr/bin/nc && \
     # cleanup and verification stage
