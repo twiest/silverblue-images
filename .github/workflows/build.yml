@@ -91,6 +91,33 @@ jobs:
           extra-args: |
             --disable-content-trust
 
+  silverblue-zfs-base---dracut-test:
+    needs: silverblue-shared-downloader-kernel-cache
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Build container image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: "silverblue-zfs-base---dracut-test"
+          containerfiles: "silverblue-zfs-base---dracut-test/Containerfile"
+          image: silverblue-zfs-base---dracut-test
+          layers: false
+          oci: true
+
+      - name: Push to ghcr.io
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: silverblue-zfs-base---dracut-test
+          tags: "latest"
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          extra-args: |
+            --disable-content-trust
+
   silverblue-zfs-base:
     needs: silverblue-shared-downloader-kernel-cache
     runs-on: ubuntu-latest

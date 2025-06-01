@@ -1,0 +1,56 @@
+
+module twiest-zfs 1.0;
+
+require {
+	type mnt_t;
+	type mount_var_run_t;
+	type mount_exec_t;
+	type fs_t;
+	type device_t;
+	type kernel_generic_helper_t;
+	type sysctl_rpc_t;
+	type proc_net_t;
+	type unlabeled_t;
+	class file { execute execute_no_trans getattr map open read write };
+	class lnk_file read;
+	class dir { getattr mounton search };
+	class capability { setgid setuid sys_admin };
+	class chr_file { ioctl open read write };
+	class filesystem { getattr mount unmount };
+}
+
+#============= kernel_generic_helper_t ==============
+
+#!!!! This avc is allowed in the current policy
+#!!!! This av rule may have been overridden by an extended permission av rule
+allow kernel_generic_helper_t device_t:chr_file { ioctl open read write };
+
+#!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t fs_t:filesystem { getattr mount unmount };
+
+#!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t mnt_t:lnk_file read;
+
+#!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t mount_exec_t:file { execute execute_no_trans getattr map open read };
+
+#!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t mount_var_run_t:dir search;
+
+#!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t mount_var_run_t:file { getattr open read };
+
+#!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t proc_net_t:lnk_file read;
+
+#!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t self:capability { setgid setuid sys_admin };
+
+#!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t sysctl_rpc_t:dir search;
+
+#!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t sysctl_rpc_t:file { open read write };
+
+#!!!! This avc is allowed in the current policy
+allow kernel_generic_helper_t unlabeled_t:dir { getattr mounton search };
