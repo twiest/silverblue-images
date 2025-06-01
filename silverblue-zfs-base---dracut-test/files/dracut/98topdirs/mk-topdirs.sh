@@ -27,18 +27,18 @@ key="${options_kv[0]}"
 value="${options_kv[1]}"
 
 
+sysroot_base_dir=/sysroot/sysroot
+
 # Temporarily disable sysroot immutability
-/usr/bin/lsattr -d /sysroot
-/usr/bin/chattr -V -i /sysroot
+mount -o remount,rw "$sysroot_base_dir"
 
 IFS=','
 for opt in ${value}; do
-  top_dir="/sysroot/${opt}"
+  top_dir="${sysroot_base_dir}/${opt}"
   echo -n "Creating $top_dir... "
   mkdir -p "$top_dir"
   echo "Done."
 done
 
 # Re-enable sysroot immutability
-/usr/bin/chattr -V +i /sysroot
-/usr/bin/lsattr -d /sysroot
+mount -o remount,ro "$sysroot_base_dir"
