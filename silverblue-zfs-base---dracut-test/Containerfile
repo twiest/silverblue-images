@@ -54,10 +54,10 @@ RUN dnf install -y lsscsi busybox rng-tools biosdevname device-mapper-multipath 
 RUN echo 'add_dracutmodules+=" zfs "' > /etc/dracut.conf.d/zfs.conf && \
     echo 'force_drivers+=" zfs "' >> /etc/dracut.conf.d/zfs.conf
 
-# Add topdirs so that we customize /sysroot on boot with custom directories
-ADD files/dracut/98topdirs/mk-topdirs.sh   /usr/lib/topdirs/mk-topdirs.sh
-ADD files/dracut/98topdirs/module-setup.sh /usr/lib/dracut/modules.d/98topdirs/module-setup.sh
-ADD files/dracut/98topdirs/topdirs.service /usr/lib/systemd/system/topdirs.service
+## Add topdirs so that we customize /sysroot on boot with custom directories
+#ADD files/dracut/98topdirs/mk-topdirs.sh   /usr/lib/topdirs/mk-topdirs.sh
+#ADD files/dracut/98topdirs/module-setup.sh /usr/lib/dracut/modules.d/98topdirs/module-setup.sh
+#ADD files/dracut/98topdirs/topdirs.service /usr/lib/systemd/system/topdirs.service
 
 # Run dracut to build a new initrd
 RUN export KERNEL_VERSION="$(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')" && \
@@ -92,6 +92,9 @@ RUN dnf remove -y rng-tools && \
     sed -i '/rtlsdr/d' /etc/group && \
     rm -rf /var && mkdir /var && \
     rm -rf /boot && mkdir /boot
+
+# Make the fun topdir
+RUN mkdir /fun
 
 # Verify image is good
 RUN bootc container lint --fatal-warnings --skip baseimage-composefs
