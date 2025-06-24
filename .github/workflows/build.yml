@@ -92,7 +92,6 @@ jobs:
             --disable-content-trust
 
   almalinux-zfs-base:
-    needs: silverblue-shared-downloader-kernel-cache
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
