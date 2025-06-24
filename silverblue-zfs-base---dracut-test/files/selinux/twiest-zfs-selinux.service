@@ -1,9 +1,0 @@
-[Unit]
-Description=Install ZFS specific selinux policy
-
-[Service]
-Type=oneshot
-ExecStart=/usr/sbin/semodule -vi /usr/share/selinux/packages/twiest-zfs.pp
-
-[Install]
-WantedBy=multi-user.target
