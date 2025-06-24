@@ -1,0 +1,32 @@
+FROM quay.io/almalinuxorg/almalinux-bootc:10
+#FROM quay.io/centos-bootc/centos-bootc:stream10
+
+# Install zfs release package
+# https://openzfs.github.io/openzfs-docs/Getting%20Started/RHEL-based%20distro/index.html
+#RUN dnf install https://zfsonlinux.org/epel/zfs-release-2-3$(rpm --eval "%{dist}").noarch.rpm
+RUN dnf install -y http://download.zfsonlinux.org/epel-testing/10.0/zfs-release-2-8.el10.noarch.rpm && \
+    dnf clean all
+
+# TODO: Remove this once the repository is signed
+# https://github.com/openzfs/zfs/issues/17452#issuecomment-2989229216
+RUN sed -i -e 's/gpgcheck=1/gpgcheck=0/' /etc/yum.repos.d/zfs.repo
+
+# This is needed to use dnf config-manager
+RUN dnf install -y dnf-plugins-core && \
+    dnf clean all
+
+# Use the static zfs kmod istead of dkms
+# From: https://openzfs.github.io/openzfs-docs/Getting%20Started/RHEL-based%20distro/index.html#kabi-tracking-kmod
+RUN dnf config-manager --disable zfs && \
+    dnf config-manager --enable zfs-kmod && \
+    dnf install -y zfs && \
+    dnf clean all
+
+# Update the system (must be run close to last!)
+RUN dnf update -y && \
+    dnf clean all
+
+
+# Verify image is good (must be run last!)
+RUN rm -rf /var && mkdir /var # Cleanup image for linting
+RUN bootc container lint --fatal-warnings # Lint the image
