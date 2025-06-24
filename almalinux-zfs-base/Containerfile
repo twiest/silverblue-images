@@ -1,5 +1,16 @@
 FROM quay.io/almalinuxorg/almalinux-bootc:10
-#FROM quay.io/centos-bootc/centos-bootc:stream10
+
+# Update the system (must be run first!)
+RUN dnf update -y && \
+    dnf clean all
+
+# This is needed to use dnf config-manager and dnf versionlock
+RUN dnf install -y dnf-plugins-core dnf-plugin-versionlock && \
+    dnf clean all
+
+# Ensure that the kernel is never updated again (more compatible with zfs)
+RUN dnf versionlock add kernel* && \
+    dnf clean all
 
 # Install zfs release package
 # https://openzfs.github.io/openzfs-docs/Getting%20Started/RHEL-based%20distro/index.html
@@ -11,21 +22,12 @@ RUN dnf install -y http://download.zfsonlinux.org/epel-testing/10.0/zfs-release-
 # https://github.com/openzfs/zfs/issues/17452#issuecomment-2989229216
 RUN sed -i -e 's/gpgcheck=1/gpgcheck=0/' /etc/yum.repos.d/zfs.repo
 
-# This is needed to use dnf config-manager
-RUN dnf install -y dnf-plugins-core && \
-    dnf clean all
-
 # Use the static zfs kmod istead of dkms
 # From: https://openzfs.github.io/openzfs-docs/Getting%20Started/RHEL-based%20distro/index.html#kabi-tracking-kmod
 RUN dnf config-manager --disable zfs && \
     dnf config-manager --enable zfs-kmod && \
     dnf install -y zfs && \
     dnf clean all
-
-# Update the system (must be run close to last!)
-RUN dnf update -y && \
-    dnf clean all
-
 
 # Verify image is good (must be run last!)
 RUN rm -rf /var && mkdir /var # Cleanup image for linting
