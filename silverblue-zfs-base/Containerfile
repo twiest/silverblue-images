@@ -3,6 +3,13 @@ FROM ghcr.io/twiest/silverblue-shared-downloader-kernel-cache:latest as rpms
 
 FROM quay.io/fedora/fedora-silverblue:42
 
+# Update the system (must be run first!)
+RUN dnf update -y && \
+    dnf clean all
+
+# This is needed to use dnf config-manager and dnf versionlock
+RUN dnf install -y dnf-plugins-core dnf-plugin-versionlock && \
+    dnf clean all
 
 # Fix selinux so that it allows zfs to mount snapshots
 ADD files/selinux/twiest-zfs.pp /usr/share/selinux/packages/
@@ -81,6 +88,10 @@ RUN dnf install -y /root/sanoid-*.rpm && \
 
 # Uninstall ZFS repository (speeds up dnf metadata operations)
 RUN rpm -evh zfs-release-2-8$(rpm --eval "%{dist}")
+
+# Ensure that the kernel and zfs modules are never updated (more stable)
+RUN dnf versionlock add kernel* zfs* && \
+    dnf clean all
 
 # Cleanup image for linting
 RUN dnf remove -y rng-tools && \
