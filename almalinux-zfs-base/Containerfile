@@ -30,5 +30,6 @@ RUN dnf config-manager --disable zfs && \
     dnf clean all
 
 # Verify image is good (must be run last!)
-RUN rm -rf /var && mkdir /var # Cleanup image for linting
+RUN rm -rf /var && mkdir /var && \
+    rm -rf /boot && mkdir /boot  # Cleanup image for linting
 RUN bootc container lint --fatal-warnings # Lint the image
