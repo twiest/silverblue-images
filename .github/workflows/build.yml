@@ -29,7 +29,7 @@ jobs:
           oci: true
 
       - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@v2.8
         with:
           image: silverblue-shared-downloader-kernel-cache
           tags: "latest"
@@ -55,7 +55,7 @@ jobs:
           oci: true
 
       - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@v2.8
         with:
           image: silverblue-shared-builder-brave
           tags: "latest"
@@ -81,7 +81,7 @@ jobs:
           oci: true
 
       - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@v2.8
         with:
           image: silverblue-shared-builder-python-validity
           tags: "latest"
@@ -107,7 +107,7 @@ jobs:
           oci: true
 
       - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@v2.8
         with:
           image: almalinux-zfs-base
           tags: "latest"
@@ -134,7 +134,7 @@ jobs:
           oci: true
 
       - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@v2.8
         with:
           image: silverblue-zfs-base
           tags: "latest"
@@ -160,7 +160,7 @@ jobs:
           oci: true
 
       - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@v2.8
         with:
           image: silverblue-base
           tags: "latest"
@@ -187,7 +187,7 @@ jobs:
           oci: true
 
       - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@v2.8
         with:
           image: silverblue-shuttle-sz170r8v2
           tags: "latest"
@@ -214,7 +214,7 @@ jobs:
           oci: true
 
       - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@v2.8
         with:
           image: silverblue-supermicro-x10drw-it
           tags: "latest"
@@ -241,7 +241,7 @@ jobs:
           oci: true
 
       - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.6
+        uses: redhat-actions/push-to-registry@v2.8
         with:
           image: silverblue-thinkpad-p1g1
           tags: "latest"
@@ -268,7 +268,7 @@ jobs:
           oci: true
 
       - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.6
+        uses: redhat-actions/push-to-registry@v2.8
         with:
           image: silverblue-thinkpad-p1g5
           tags: "latest"
