@@ -5,6 +5,7 @@ on:
     - cron: "00 10 * * *"
   push:
     branches: ["main"]
+  workflow_dispatch: # This line enables manual triggering
 
 env:
   REGISTRY: ghcr.io
