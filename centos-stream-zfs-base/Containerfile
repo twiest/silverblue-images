@@ -17,7 +17,7 @@ RUN dnf versionlock add kernel* && \
     dnf clean all
 
 # Install zfs release package
-# https://openzfs.github.io/openzfs-docs/Getting%20Started/RHEL-based%20distro/index.html
+# From: https://openzfs.github.io/openzfs-docs/Getting%20Started/RHEL-based%20distro/index.html
 RUN dnf install -y https://zfsonlinux.org/epel/zfs-release-2-8$(rpm --eval "%{dist}").noarch.rpm && \
     dnf clean all
 
@@ -38,7 +38,9 @@ RUN dnf config-manager --disable zfs && \
     dnf install -y zfs && \
     dnf clean all
 
-# Verify image is good (must be run last!)
+# Cleanup image for linting
 RUN rm -rf /var && mkdir /var && \
-    rm -rf /boot && mkdir /boot  # Cleanup image for linting
-RUN bootc container lint --fatal-warnings # Lint the image
+    rm -rf /boot && mkdir /boot
+
+# Verify image is good (must be run last!)
+RUN bootc container lint --fatal-warnings
