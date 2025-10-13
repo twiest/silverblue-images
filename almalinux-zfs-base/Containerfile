@@ -14,13 +14,8 @@ RUN dnf versionlock add kernel* && \
 
 # Install zfs release package
 # https://openzfs.github.io/openzfs-docs/Getting%20Started/RHEL-based%20distro/index.html
-#RUN dnf install https://zfsonlinux.org/epel/zfs-release-2-3$(rpm --eval "%{dist}").noarch.rpm
-RUN dnf install -y http://download.zfsonlinux.org/epel-testing/10.0/zfs-release-2-8.el10.noarch.rpm && \
+RUN dnf install -y https://zfsonlinux.org/epel/zfs-release-2-8$(rpm --eval "%{dist}").noarch.rpm && \
     dnf clean all
-
-# TODO: Remove this once the repository is signed
-# https://github.com/openzfs/zfs/issues/17452#issuecomment-2989229216
-RUN sed -i -e 's/gpgcheck=1/gpgcheck=0/' /etc/yum.repos.d/zfs.repo
 
 # Use the static zfs kmod istead of dkms
 # From: https://openzfs.github.io/openzfs-docs/Getting%20Started/RHEL-based%20distro/index.html#kabi-tracking-kmod
