@@ -1,0 +1,44 @@
+FROM quay.io/centos-bootc/centos-bootc:stream10
+
+# Update the system (must be run first!)
+RUN dnf update -y && \
+    dnf clean all
+
+# Remove subscription manager
+RUN dnf remove -y subscription-manager subscription-manager-addon && \
+    dnf clean all
+
+# This is needed to use dnf config-manager and dnf versionlock
+RUN dnf install -y dnf-plugins-core dnf-plugin-versionlock && \
+    dnf clean all
+
+# Ensure that the kernel is never updated again (more compatible with zfs)
+RUN dnf versionlock add kernel* && \
+    dnf clean all
+
+# Install zfs release package
+# https://openzfs.github.io/openzfs-docs/Getting%20Started/RHEL-based%20distro/index.html
+RUN dnf install -y https://zfsonlinux.org/epel/zfs-release-2-8$(rpm --eval "%{dist}").noarch.rpm && \
+    dnf clean all
+
+# Use the static zfs kmod istead of dkms
+# From: https://openzfs.github.io/openzfs-docs/Getting%20Started/RHEL-based%20distro/index.html#kabi-tracking-kmod
+#
+# This is currently failing with:
+#  ZFS on Linux for EL10 - kmod                     64 kB/s |  29 kB     00:00    
+#  Error: 
+#   Problem: package zfs-2.2.8-1.el10.x86_64 from zfs-kmod requires zfs-kmod = 2.2.8, but none of the providers can be installed
+#    - conflicting requests
+#    - nothing provides kernel(__alloc_pages_noprof) = 0xf84a0899 needed by kmod-zfs-2.2.8-1.el10.x86_64 from zfs-kmod
+#    - nothing provides kernel(__blk_alloc_disk) = 0x86e44e55 needed by kmod-zfs-2.2.8-1.el10.x86_64 from zfs-kmod
+#    - nothing provides kernel(__blk_mq_alloc_disk) = 0xd05cab7f needed by kmod-zfs-2.2.8-1.el10.x86_64 from zfs-kmod
+#  [... snip ...]
+RUN dnf config-manager --disable zfs && \
+    dnf config-manager --enable zfs-kmod && \
+    dnf install -y zfs && \
+    dnf clean all
+
+# Verify image is good (must be run last!)
+RUN rm -rf /var && mkdir /var && \
+    rm -rf /boot && mkdir /boot  # Cleanup image for linting
+RUN bootc container lint --fatal-warnings # Lint the image
