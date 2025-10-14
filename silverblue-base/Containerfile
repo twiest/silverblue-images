@@ -73,6 +73,10 @@ ADD files/profile.d/git-prompt.sh /etc/profile.d/git-prompt.sh
 RUN dnf install -y gnome-session-xsession xorg-x11-drivers xorg-x11-xinit && \
     dnf clean all
 
+# Add build date
+ADD files/add-build-date.sh /bin
+RUN /bin/add-build-date.sh
+
 # Cleanup image for linting
 RUN test -f /usr/lib/sysusers.d/qemu.conf || echo -e 'g qemu 107\nu qemu 107 "qemu user" / /usr/sbin/nologin' > /usr/lib/sysusers.d/qemu.conf && \
     test -f /usr/lib/sysusers.d/libvirt.conf || echo -e 'g libvirt 963' > /usr/lib/sysusers.d/libvirt.conf && \
