@@ -24,6 +24,10 @@ RUN dnf config-manager --disable zfs && \
     dnf install -y zfs && \
     dnf clean all
 
+# Install epel
+RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm && \
+    dnf clean all
+
 # Cleanup image for linting
 RUN rm -rf /var && mkdir /var && \
     rm -rf /boot && mkdir /boot
