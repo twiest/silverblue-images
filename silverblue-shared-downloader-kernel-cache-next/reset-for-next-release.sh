@@ -1,0 +1,1 @@
+../bin/reset-for-next-release.sh
