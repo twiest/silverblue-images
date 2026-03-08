@@ -96,6 +96,9 @@ RUN dnf versionlock add kernel* zfs* && \
 # Cleanup image for linting
 RUN dnf remove -y rng-tools && \
     sed -i '/rtlsdr/d' /etc/group && \
+    rm -rf /run/dnf && mkdir /run/dnf && \
+    rm -rf /run/systemd && mkdir /run/systemd && \
+    rm -rf /tmp && mkdir /tmp && \
     rm -rf /var && mkdir /var && \
     rm -rf /boot && mkdir /boot
 
