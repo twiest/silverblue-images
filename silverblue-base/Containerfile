@@ -86,8 +86,12 @@ RUN test -f /usr/lib/sysusers.d/qemu.conf || echo -e 'g qemu 107\nu qemu 107 "qe
 RUN dnf remove -y glusterfs && \
     sed -i '/gluster/d' /etc/passwd && \
     sed -i '/gluster/d' /etc/group && \
-    rm -rf /var && mkdir /var && \
-    rm -rf /boot && mkdir /boot
+    rm -vrf /tmp/gmc_date_info && \
+    rm -vrf /run/dnf && \
+    rm -vrf /run/screen && \
+    rm -vrf /run/selinux-policy && \
+    rm -vrf /var && mkdir /var && \
+    rm -vrf /boot && mkdir /boot
 
 # Verify image is good
 RUN bootc container lint --fatal-warnings --skip baseimage-composefs

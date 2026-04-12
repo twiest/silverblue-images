@@ -46,6 +46,8 @@ RUN mkdir -p /var/opt && \
 
 # Cleanup image for linting
 RUN rm -rf /var && mkdir /var && \
+    rm -rf /run/dnf && \
+    rm -rf /run/selinux-policy && \
     rm -rf /boot && mkdir /boot
 
 # Verify image is good

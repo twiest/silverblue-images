@@ -14,6 +14,7 @@ RUN install-nvidia-akmod.sh && \
 RUN test -f /usr/lib/sysusers.d/akmods.conf || echo -e 'g akmods 963\nu akmods 992 "User is used by akmods to build akmod packages" /var/cache/akmods /sbin/nologin' > /usr/lib/sysusers.d/akmods.conf
 
 RUN rm -rf /var && mkdir /var && \
+    rm -rf /run/dnf && \
     rm -rf /boot && mkdir /boot
 
 # Verify image is good
