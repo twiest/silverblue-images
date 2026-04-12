@@ -1,6 +1,6 @@
 #!/bin/bash
 
-date_info="/tmp/gmc_date_info"
+date_info="/tmp/gmt_date_info"
 cloud_dir="/etc/cloud"
 build_info_file="$cloud_dir/build.info"
 datetime_url="https://google.com"
