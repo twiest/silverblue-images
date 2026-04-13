@@ -1,12 +1,11 @@
 FROM ghcr.io/twiest/silverblue-base:latest
 
-ADD files/install-nvidia-akmod.sh /usr/bin/install-nvidia-akmod.sh
-
 # Install nvidia drivers
 RUN dnf install -y akmod-nvidia xorg-x11-drv-nvidia-cuda nvtop glmark2 && \
     dnf clean all
 
 # Create nvidia akmods
+ADD files/install-nvidia-akmod.sh /usr/bin/install-nvidia-akmod.sh
 RUN install-nvidia-akmod.sh && \
     rm -rf /var /usr/bin/install-nvidia-akmod.sh
 
@@ -14,6 +13,7 @@ RUN install-nvidia-akmod.sh && \
 RUN test -f /usr/lib/sysusers.d/akmods.conf || echo -e 'g akmods 963\nu akmods 992 "User is used by akmods to build akmod packages" /var/cache/akmods /sbin/nologin' > /usr/lib/sysusers.d/akmods.conf
 
 RUN rm -rf /var && mkdir /var && \
+    rm -rf /tmp && mkdir /tmp && \
     rm -rf /run/dnf && \
     rm -rf /boot && mkdir /boot
 
