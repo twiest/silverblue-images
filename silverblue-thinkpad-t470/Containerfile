@@ -48,6 +48,7 @@ RUN mkdir -p /var/opt && \
 RUN rm -rf /var && mkdir /var && \
     rm -rf /run/dnf && \
     rm -rf /run/selinux-policy && \
+    rm -rf /tmp && mkdir /tmp && \
     rm -rf /boot && mkdir /boot
 
 # Verify image is good
