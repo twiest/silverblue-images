@@ -86,10 +86,10 @@ RUN test -f /usr/lib/sysusers.d/qemu.conf || echo -e 'g qemu 107\nu qemu 107 "qe
 RUN dnf remove -y glusterfs && \
     sed -i '/gluster/d' /etc/passwd && \
     sed -i '/gluster/d' /etc/group && \
-    rm -vrf /tmp/gmc_date_info && \
     rm -vrf /run/dnf && \
     rm -vrf /run/screen && \
     rm -vrf /run/selinux-policy && \
+    rm -vrf /tmp && mkdir /tmp && \
     rm -vrf /var && mkdir /var && \
     rm -vrf /boot && mkdir /boot
 
