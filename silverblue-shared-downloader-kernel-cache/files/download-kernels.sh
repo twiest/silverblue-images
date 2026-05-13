@@ -68,7 +68,7 @@ cd /tmp/rpms
 
 
 # Install ZFS repository
-zfs_release_pkg="https://zfsonlinux.org/fedora/zfs-release-2-8$(rpm --eval "%{dist}").noarch.rpm"
+zfs_release_pkg="https://zfsonlinux.org/fedora/zfs-release-3-1$(rpm --eval "%{dist}").noarch.rpm"
 dnf install -y "${zfs_release_pkg}"
 
 # Download zfs-dkm package.
@@ -84,6 +84,11 @@ echo
 echo --------------------------------------------------------------------------------
 echo -n "Determining what's the highest kernel version that zfs-dkms supports... "
 kernel_release=$(rpm -qp --requires zfs-dkms-*.rpm 2>/dev/null | awk '/kernel-devel <= / { blah = $3 } END { print blah }')
+
+# TEMP OVERRIDE since the above generates invalid 99.99.999 (bug in zfs packaging)
+# Get this number from "Linux-Maximum" here: https://github.com/openzfs/zfs/blob/master/META
+kernel_release=6.19
+
 rm zfs-dkms-*.rpm
 echo "success! [$kernel_release]"
 

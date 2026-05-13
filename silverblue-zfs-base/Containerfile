@@ -87,7 +87,7 @@ RUN dnf install -y /root/sanoid-*.rpm && \
     dnf clean all
 
 # Uninstall ZFS repository (speeds up dnf metadata operations)
-RUN rpm -evh zfs-release-2-8$(rpm --eval "%{dist}")
+RUN rpm -evh zfs-release-3-1$(rpm --eval "%{dist}")
 
 # Ensure that the kernel and zfs modules are never updated (more stable)
 RUN dnf versionlock add kernel* zfs* && \
