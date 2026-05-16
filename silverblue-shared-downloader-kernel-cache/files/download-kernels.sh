@@ -85,9 +85,17 @@ echo ---------------------------------------------------------------------------
 echo -n "Determining what's the highest kernel version that zfs-dkms supports... "
 kernel_release=$(rpm -qp --requires zfs-dkms-*.rpm 2>/dev/null | awk '/kernel-devel <= / { blah = $3 } END { print blah }')
 
-# TEMP OVERRIDE since the above generates invalid 99.99.999 (bug in zfs packaging)
-# Get this number from "Linux-Maximum" here: https://github.com/openzfs/zfs/blob/master/META
-kernel_release=6.19
+
+if [ "$kernel_release" == "99.99.999" ]; then
+  # TEMP OVERRIDE since the above generates invalid 99.99.999 (bug in zfs packaging)
+  # Get this number from "Linux-Maximum" here: https://github.com/openzfs/zfs/blob/master/META
+
+  kernel_release=6.19
+  echo
+  echo
+  echo "WARNING: Applying kernel_release version override to [$kernel_release] since ZFS is saying it requires <= 99.99.999 (bug)"
+  echo
+fi
 
 rm zfs-dkms-*.rpm
 echo "success! [$kernel_release]"
