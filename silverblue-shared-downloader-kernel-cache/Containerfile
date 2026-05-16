@@ -1,6 +1,6 @@
 FROM fedora:42 AS downloader
 
-RUN dnf install -y dnf-plugins-core wget gawk && \
+RUN dnf install -y dnf-plugins-core wget gawk rpmdevtools && \
     dnf clean all
 
 COPY files/download-kernels.sh /tmp

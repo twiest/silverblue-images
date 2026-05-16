@@ -71,8 +71,8 @@ cd /tmp/rpms
 zfs_release_pkg="https://zfsonlinux.org/fedora/zfs-release-3-1$(rpm --eval "%{dist}").noarch.rpm"
 dnf install -y "${zfs_release_pkg}"
 
-# Download zfs-dkm package.
-dnf download -y zfs-dkms
+# Download zfs-dkm and kernel packages so that we can inspect their metadata.
+dnf download -y zfs-dkms kernel
 
 # Download the zfs-release package. The zfs-release rpm needs to be downloaded separately because `dnf download` can't seem to find it.
 wget "${zfs_release_pkg}"
@@ -82,23 +82,28 @@ ls -la
 
 echo
 echo --------------------------------------------------------------------------------
-echo -n "Determining what's the highest kernel version that zfs-dkms supports... "
-kernel_release=$(rpm -qp --requires zfs-dkms-*.rpm 2>/dev/null | awk '/kernel-devel <= / { blah = $3 } END { print blah }')
+echo -n "Determining what's the best kernel version for zfs-dkms supports... "
 
+zfs_kernel_release=$(rpm -qp --requires zfs-dkms-*.rpm 2>/dev/null | awk '/kernel-devel <= / { blah = $3 } END { print blah }')
 
-if [ "$kernel_release" == "99.99.999" ]; then
-  # TEMP OVERRIDE since the above generates invalid 99.99.999 (bug in zfs packaging)
-  # Get this number from "Linux-Maximum" here: https://github.com/openzfs/zfs/blob/master/META
+pkg_kernel_release=$(rpm -qp kernel-*.rpm --queryformat '%{VERSION}')
 
-  kernel_release=6.19
-  echo
-  echo
-  echo "WARNING: Applying kernel_release version override to [$kernel_release] since ZFS is saying it requires <= 99.99.999 (bug)"
-  echo
+set +e
+rpmdev-vercmp "$zfs_kernel_release" "$pkg_kernel_release" > /dev/null
+exit_code=$?
+set -e
+
+zfs_kernel_release_is_larger=11 # 11 means that the first arg is larger than the 2nd arg to rpmdev-vercmp
+
+# Take whichever kernel_release is the smallest of the two.
+if [ $exit_code -eq $zfs_kernel_release_is_larger ]; then
+   kernel_release=$pkg_kernel_release
+else
+   kernel_release=$zfs_kernel_release
 fi
 
-rm zfs-dkms-*.rpm
 echo "success! [$kernel_release]"
+rm -v zfs-dkms-*.rpm kernel-*.rpm
 
 source /etc/os-release
 
@@ -193,3 +198,4 @@ pwd
 ls -la --color
 echo
 echo --------------------------------------------------------------------------------
+
