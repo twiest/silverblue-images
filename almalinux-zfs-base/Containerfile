@@ -14,7 +14,7 @@ RUN dnf versionlock add kernel* && \
 
 # Install zfs release package
 # From: https://openzfs.github.io/openzfs-docs/Getting%20Started/RHEL-based%20distro/index.html
-RUN dnf install -y https://zfsonlinux.org/epel/zfs-release-3-1$(rpm --eval "%{dist}").noarch.rpm && \
+RUN dnf install -y https://zfsonlinux.org/epel/zfs-release-3-0$(rpm --eval "%{dist}").noarch.rpm && \
     dnf clean all
 
 # Use the static zfs kmod istead of dkms
