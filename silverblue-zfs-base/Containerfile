@@ -1,7 +1,7 @@
 FROM ghcr.io/twiest/silverblue-shared-downloader-kernel-cache:latest as rpms
 
 
-FROM quay.io/fedora/fedora-silverblue:42
+FROM quay.io/fedora/fedora-silverblue:44
 
 # Update the system (must be run first!)
 RUN dnf update -y && \
@@ -82,9 +82,9 @@ RUN export KERNEL_VERSION="$(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}
 RUN test -h /usr/bin/ld && rm -v /usr/bin/ld
 
 # Install sanoid from rpm
-ADD files/sanoid/sanoid-2.2.0-1.fc42.noarch.rpm /root
-RUN dnf install -y /root/sanoid-*.rpm && \
-    dnf clean all
+ADD files/sanoid/sanoid-2.3.0-1.fc44.noarch.rpm /root
+RUN rpm -ivh --noscripts /root/sanoid-*.rpm && \
+    rm -v /root/sanoid-*.rpm
 
 # Uninstall ZFS repository (speeds up dnf metadata operations)
 RUN rpm -evh zfs-release-3-1$(rpm --eval "%{dist}")

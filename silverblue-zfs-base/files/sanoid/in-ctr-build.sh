@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-sanoid_version=sanoid-2.2.0
+sanoid_version=sanoid-2.3.0
 
 mkdir -p /var/roothome
 mkdir -p /root/rpmbuild/RPMS/noarch

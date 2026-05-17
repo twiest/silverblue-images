@@ -1,4 +1,4 @@
-FROM fedora:42 AS downloader
+FROM fedora:44 AS downloader
 
 RUN dnf install -y dnf-plugins-core wget gawk rpmdevtools && \
     dnf clean all

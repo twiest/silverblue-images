@@ -66,7 +66,7 @@ jobs:
           extra-args: |
             --disable-content-trust
 
-  silverblue-shared-builder-python-validity:
+  silverblue-shared-downloader-python-validity-cache:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -75,16 +75,16 @@ jobs:
       - name: Build container image
         uses: redhat-actions/buildah-build@v2.13
         with:
-          context: "silverblue-shared-builder-python-validity"
-          containerfiles: "silverblue-shared-builder-python-validity/Containerfile"
-          image: silverblue-shared-builder-python-validity
+          context: "silverblue-shared-downloader-python-validity-cache"
+          containerfiles: "silverblue-shared-downloader-python-validity-cache/Containerfile"
+          image: silverblue-shared-downloader-python-validity-cache
           layers: false
           oci: true
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.8
         with:
-          image: silverblue-shared-builder-python-validity
+          image: silverblue-shared-downloader-python-validity-cache
           tags: "latest"
           registry: ${{ env.IMAGE_REGISTRY }}
           username: ${{ env.REGISTRY_USER }}
@@ -280,7 +280,7 @@ jobs:
             --disable-content-trust
 
   silverblue-thinkpad-t470:
-    needs: [silverblue-base, silverblue-shared-builder-brave, silverblue-shared-builder-python-validity]
+    needs: [silverblue-base, silverblue-shared-builder-brave, silverblue-shared-downloader-python-validity-cache]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
