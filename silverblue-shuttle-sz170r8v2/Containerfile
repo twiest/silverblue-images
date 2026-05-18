@@ -1,7 +1,13 @@
 FROM ghcr.io/twiest/silverblue-base:latest
 
 # Install nvidia drivers
-RUN dnf install -y akmod-nvidia xorg-x11-drv-nvidia-cuda nvtop glmark2 && \
+# We must move akmodsbuild bin out of the way because the nvidia package tries to call it and 
+# it fails saying it should not be run as root
+RUN dnf install -y akmods && \
+    mv /usr/bin/akmodsbuild /usr/bin/akmodsbuild.bak && \
+    ln -s /usr/bin/true /usr/bin/akmodsbuild && \
+    dnf install -y akmod-nvidia xorg-x11-drv-nvidia-cuda nvtop glmark2 && \
+    mv /usr/bin/akmodsbuild.bak /usr/bin/akmodsbuild && \
     dnf clean all
 
 # Create nvidia akmods
