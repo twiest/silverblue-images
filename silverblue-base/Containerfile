@@ -42,7 +42,8 @@ RUN dnf install -y \
 # Install tailscale
 RUN cd /etc/yum.repos.d/ && curl -LO https://pkgs.tailscale.com/stable/fedora/tailscale.repo && \
     dnf install -y tailscale && \
-    dnf clean all
+    dnf clean all && \
+    rm /etc/yum.repos.d/tailscale.repo # Removing makes dnf queries faster
 
 # Add tcpping for convenience
 ADD files/cli/tcpping /usr/bin/tcpping
