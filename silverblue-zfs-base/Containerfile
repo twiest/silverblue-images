@@ -82,9 +82,15 @@ RUN export KERNEL_VERSION="$(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}
 RUN test -h /usr/bin/ld && rm -v /usr/bin/ld
 
 # Install sanoid from rpm
-ADD files/sanoid/sanoid-2.3.0-1.fc44.noarch.rpm /root
-RUN rpm -ivh --noscripts /root/sanoid-*.rpm && \
-    rm -v /root/sanoid-*.rpm
+# (Moving systemctl out of the way temporarily is necessary as Sanoid tries to call it which fails since systemd
+#  isn't loaded and that causes the RUN to fail).
+ADD files/sanoid/sanoid-2.3.0-1.fc44.noarch.rpm /
+RUN mv /usr/sbin/systemctl /usr/sbin/systemctl.bak && \
+    ln -s /usr/sbin/true /usr/sbin/systemctl && \
+    dnf install -y /sanoid-*.rpm && \
+    dnf clean all && \
+    mv /usr/sbin/systemctl.bak /usr/sbin/systemctl && \
+    rm -v /sanoid-*.rpm
 
 # Uninstall ZFS repository (speeds up dnf metadata operations)
 RUN rpm -evh zfs-release-3-1$(rpm --eval "%{dist}")
