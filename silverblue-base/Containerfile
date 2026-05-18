@@ -69,10 +69,6 @@ ADD files/profile.d/vim-default-editor.sh /etc/profile.d/vim-default-editor.sh
 # Enable git prompt
 ADD files/profile.d/git-prompt.sh /etc/profile.d/git-prompt.sh
 
-# Re-enable x11
-RUN dnf install -y gnome-session-xsession xorg-x11-drivers xorg-x11-xinit && \
-    dnf clean all
-
 # Add build date
 ADD files/add-build-date.sh /bin
 RUN /bin/add-build-date.sh
