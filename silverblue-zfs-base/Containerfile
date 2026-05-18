@@ -11,12 +11,6 @@ RUN dnf update -y && \
 RUN dnf install -y dnf-plugins-core dnf-plugin-versionlock && \
     dnf clean all
 
-# Fix selinux so that it allows zfs to mount snapshots
-ADD files/selinux/twiest-zfs.pp /usr/share/selinux/packages/
-ADD files/selinux/twiest-zfs.pp.bz2 /usr/share/selinux/packages/
-ADD files/selinux/twiest-zfs-selinux.service /etc/systemd/system/
-RUN systemctl enable twiest-zfs-selinux
-
 # Save old kernel version
 RUN export KERNEL_VERSION="$(rpm -qa kernel --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')" && \
     cp -v "/lib/modules/${KERNEL_VERSION}/initramfs.img" "/lib/modules/initramfs.stock.img"
