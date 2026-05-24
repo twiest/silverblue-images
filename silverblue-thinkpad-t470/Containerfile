@@ -1,6 +1,6 @@
 FROM ghcr.io/twiest/silverblue-shared-builder-brave:latest as builder-brave
 
-FROM ghcr.io/twiest/silverblue-shared-builder-python-validity:latest as builder-python-validity
+FROM ghcr.io/twiest/silverblue-shared-downloader-python-validity-cache:latest as builder-python-validity
 
 FROM ghcr.io/twiest/silverblue-base:latest
 
@@ -22,15 +22,16 @@ RUN dnf install -y /tmp/python-validity-rpms/fprintd-clients-*.rpm \
     systemctl enable python3-validity && \
     dnf clean all
 
-# python-validity still wants to write to usr. This sets up symlinks so that it goes to /var instead.
-RUN mv /usr/share/python-validity/playground /usr/share/python-validity-playground && \
-    rm -vrf /usr/share/python-validity && \
-    ln -s /var/lib/python-validity /usr/share/python-validity && \
-    sed -i 's#^ExecStart=/usr/lib/python-validity/dbus-service --debug$#ExecStart=/usr/lib/python-validity/dbus-service#' /usr/lib/systemd/system/python3-validity.service && \
-    echo 'd /var/lib/python-validity 0755 root root -' > /usr/lib/tmpfiles.d/python-validity.conf && \
-    echo 'f /var/lib/python-validity/backoff 0644 root root -' >> /usr/lib/tmpfiles.d/python-validity.conf && \
-    echo 'f /var/lib/python-validity/calib-data.bin 0644 root root -' >> /usr/lib/tmpfiles.d/python-validity.conf && \
-    echo 'L /var/lib/python-validity/playground - - - - /usr/share/python-validity-playground' >> /usr/lib/tmpfiles.d/python-validity.conf
+# Disabling this section for now as the new packages say they've fixed this behavior. Neet to test on the laptop and put back if necessary.
+## python-validity still wants to write to usr. This sets up symlinks so that it goes to /var instead.
+#RUN mv /usr/share/python-validity/playground /usr/share/python-validity-playground && \
+#    rm -vrf /usr/share/python-validity && \
+#    ln -s /var/lib/python-validity /usr/share/python-validity && \
+#    sed -i 's#^ExecStart=/usr/lib/python-validity/dbus-service --debug$#ExecStart=/usr/lib/python-validity/dbus-service#' /usr/lib/systemd/system/python3-validity.service && \
+#    echo 'd /var/lib/python-validity 0755 root root -' > /usr/lib/tmpfiles.d/python-validity.conf && \
+#    echo 'f /var/lib/python-validity/backoff 0644 root root -' >> /usr/lib/tmpfiles.d/python-validity.conf && \
+#    echo 'f /var/lib/python-validity/calib-data.bin 0644 root root -' >> /usr/lib/tmpfiles.d/python-validity.conf && \
+#    echo 'L /var/lib/python-validity/playground - - - - /usr/share/python-validity-playground' >> /usr/lib/tmpfiles.d/python-validity.conf
 
 # Install rebuilt / silverblue compatible brave-keyring
 COPY --from=builder-brave /rpms /tmp/brave-rpms
