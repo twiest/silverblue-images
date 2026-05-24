@@ -1,7 +1,26 @@
 FROM ghcr.io/twiest/silverblue-base:latest
 
+# Install nvidia drivers
+# We must move akmodsbuild bin out of the way because the nvidia package tries to call it and
+# it fails saying it should not be run as root
+RUN dnf install -y akmods && \
+    mv /usr/bin/akmodsbuild /usr/bin/akmodsbuild.bak && \
+    ln -s /usr/bin/true /usr/bin/akmodsbuild && \
+    dnf install -y akmod-nvidia xorg-x11-drv-nvidia-cuda nvtop glmark2 && \
+    mv /usr/bin/akmodsbuild.bak /usr/bin/akmodsbuild && \
+    dnf clean all
+
+# Create nvidia akmods
+ADD files/install-nvidia-akmod.sh /usr/bin/install-nvidia-akmod.sh
+RUN install-nvidia-akmod.sh && \
+    rm -rf /var /usr/bin/install-nvidia-akmod.sh
+
 # Cleanup image for linting
+RUN test -f /usr/lib/sysusers.d/akmods.conf || echo -e 'g akmods 963\nu akmods 992 "User is used by akmods to build akmod packages" /var/cache/akmods /sbin/nologin' > /usr/lib/sysusers.d/akmods.conf
+
 RUN rm -rf /var && mkdir /var && \
+    rm -rf /tmp && mkdir /tmp && \
+    rm -rf /run/dnf && \
     rm -rf /boot && mkdir /boot
 
 # Verify image is good
