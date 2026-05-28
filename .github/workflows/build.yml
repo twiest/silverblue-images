@@ -95,6 +95,13 @@ jobs:
   almalinux-zfs-base:
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -122,6 +129,13 @@ jobs:
     needs: silverblue-shared-downloader-kernel-cache
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -148,6 +162,13 @@ jobs:
   silverblue-base:
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -175,6 +196,13 @@ jobs:
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -202,6 +230,13 @@ jobs:
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -229,6 +264,20 @@ jobs:
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -256,6 +305,13 @@ jobs:
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -283,6 +339,13 @@ jobs:
     needs: [silverblue-base, silverblue-shared-builder-brave, silverblue-shared-downloader-python-validity-cache]
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -310,6 +373,13 @@ jobs:
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -337,6 +407,13 @@ jobs:
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -363,6 +440,13 @@ jobs:
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -389,6 +473,13 @@ jobs:
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
@@ -416,6 +507,13 @@ jobs:
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
+      - name: Free Disk Space (android, dotnet, boost, CodeQL)
+        run: |
+          sudo rm -rf /usr/local/lib/android # ~12 GB
+          sudo rm -rf /usr/share/dotnet # ~2 GB
+          sudo rm -rf /usr/local/share/boost # ~1 GB
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
