@@ -21,6 +21,7 @@ for configd_dir in $configd_dirs; do
       continue
     fi
 
+    echo "    --------------------------------------------------------------------------------"
     echo "    Running [$script]"
 
     # Run the script and pre-pend padding so that it looks good in journald
@@ -28,7 +29,10 @@ for configd_dir in $configd_dirs; do
     retval=${PIPESTATUS[0]}
 
     if [ $retval != 0 ]; then
+      echo "    ${script}[$retval]: FAILED!!!"
       script_exit_code=$retval
+    else
+      echo "    ${script}[$retval]: succeeded"
     fi
   done
 done
