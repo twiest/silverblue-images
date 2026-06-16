@@ -4,6 +4,7 @@ FROM ghcr.io/twiest/silverblue-shared-downloader-kernel-cache:latest as rpms
 FROM quay.io/fedora/fedora-silverblue:44
 
 # Update the system (must be run first!)
+# All base containers should run this as their first step.
 RUN dnf update -y && \
     dnf clean all
 

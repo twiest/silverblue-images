@@ -1,5 +1,10 @@
 FROM ghcr.io/twiest/silverblue-zfs-base:latest
 
+# Update the system (must be run first!)
+# All base containers should run this as their first step.
+RUN dnf update -y && \
+    dnf clean all
+
 # Install rpmfusion repos
 RUN dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm && \
     dnf install -y https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
