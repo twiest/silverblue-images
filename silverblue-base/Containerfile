@@ -70,9 +70,7 @@ RUN test -f /usr/lib/sysusers.d/libvirt.conf || echo -e 'g libvirt 963' > /usr/l
 RUN dnf remove -y glusterfs && \
     sed -i '/gluster/d' /etc/passwd && \
     sed -i '/gluster/d' /etc/group && \
-    rm -vrf /run/dnf && \
-    rm -vrf /run/screen && \
-    rm -vrf /run/selinux-policy && \
+    /bin/cleanup-slash-run-for-bootc-lint.sh && \
     rm -vrf /tmp && mkdir /tmp && \
     rm -vrf /var && mkdir /var && \
     rm -vrf /boot && mkdir /boot

@@ -95,9 +95,10 @@ RUN dnf versionlock add kernel* zfs* && \
     dnf clean all
 
 # Cleanup image for linting
+ADD files/cleanup-slash-run-for-bootc-lint.sh /bin
 RUN dnf remove -y rng-tools && \
     sed -i '/rtlsdr/d' /etc/group && \
-    rm -rf /run/dnf && \
+    /bin/cleanup-slash-run-for-bootc-lint.sh && \
     rm -rf /tmp && mkdir /tmp && \
     rm -rf /var && mkdir /var && \
     rm -rf /boot && mkdir /boot
