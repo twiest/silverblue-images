@@ -76,4 +76,4 @@ RUN dnf remove -y glusterfs && \
     rm -vrf /boot && mkdir /boot
 
 # Verify image is good
-RUN bootc container lint --fatal-warnings --skip baseimage-composefs
+RUN bootc container lint --fatal-warnings
