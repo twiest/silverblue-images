@@ -20,14 +20,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-shared-downloader-kernel-cache"
-          containerfiles: "silverblue-shared-downloader-kernel-cache/Containerfile"
-          image: silverblue-shared-downloader-kernel-cache
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-shared-downloader-kernel-cache
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.8
@@ -46,14 +47,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-shared-builder-brave"
-          containerfiles: "silverblue-shared-builder-brave/Containerfile"
-          image: silverblue-shared-builder-brave
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-shared-builder-brave
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.8
@@ -72,14 +74,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-shared-downloader-python-validity-cache"
-          containerfiles: "silverblue-shared-downloader-python-validity-cache/Containerfile"
-          image: silverblue-shared-downloader-python-validity-cache
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-shared-downloader-python-validity-cache
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.8
@@ -140,14 +143,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-zfs-base"
-          containerfiles: "silverblue-zfs-base/Containerfile"
-          image: silverblue-zfs-base
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-zfs-base
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.8
@@ -173,14 +177,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-base"
-          containerfiles: "silverblue-base/Containerfile"
-          image: silverblue-base
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-base
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.8
@@ -207,14 +212,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-shuttle-sz170r8v2"
-          containerfiles: "silverblue-shuttle-sz170r8v2/Containerfile"
-          image: silverblue-shuttle-sz170r8v2
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-shuttle-sz170r8v2
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.8
@@ -241,14 +247,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-supermicro-x10drw-it"
-          containerfiles: "silverblue-supermicro-x10drw-it/Containerfile"
-          image: silverblue-supermicro-x10drw-it
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-supermicro-x10drw-it
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.8
@@ -272,24 +279,18 @@ jobs:
           sudo rm -rf /usr/local/share/boost # ~1 GB
           sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
 
-      - name: Free Disk Space (android, dotnet, boost, CodeQL)
-        run: |
-          sudo rm -rf /usr/local/lib/android # ~12 GB
-          sudo rm -rf /usr/share/dotnet # ~2 GB
-          sudo rm -rf /usr/local/share/boost # ~1 GB
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
-
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-thinkpad-p1g1"
-          containerfiles: "silverblue-thinkpad-p1g1/Containerfile"
-          image: silverblue-thinkpad-p1g1
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-thinkpad-p1g1
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.8
@@ -316,14 +317,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-thinkpad-p1g5"
-          containerfiles: "silverblue-thinkpad-p1g5/Containerfile"
-          image: silverblue-thinkpad-p1g5
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-thinkpad-p1g5
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.8
@@ -350,14 +352,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-thinkpad-t470"
-          containerfiles: "silverblue-thinkpad-t470/Containerfile"
-          image: silverblue-thinkpad-t470
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-thinkpad-t470
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.6
@@ -384,14 +387,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-zbox-mi548"
-          containerfiles: "silverblue-zbox-mi548/Containerfile"
-          image: silverblue-zbox-mi548
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-zbox-mi548
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.6
@@ -418,14 +422,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-orico"
-          containerfiles: "silverblue-orico/Containerfile"
-          image: silverblue-orico
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-orico
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.6
@@ -484,14 +489,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-ace-t8-pro"
-          containerfiles: "silverblue-ace-t8-pro/Containerfile"
-          image: silverblue-ace-t8-pro
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-ace-t8-pro
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.6
@@ -518,14 +524,15 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install xonsh
+        run: |
+          sudo apt update
+          sudo apt install -y xonsh
+
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-neosmay-xxx-ac8f-yyy"
-          containerfiles: "silverblue-neosmay-xxx-ac8f-yyy/Containerfile"
-          image: silverblue-neosmay-xxx-ac8f-yyy
-          layers: false
-          oci: true
+        run: |
+          pushd silverblue-neosmay-xxx-ac8f-yyy
+          ./build.xsh
 
       - name: Push to ghcr.io
         uses: redhat-actions/push-to-registry@v2.6
