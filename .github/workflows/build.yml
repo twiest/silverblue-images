@@ -442,39 +442,7 @@ jobs:
           password: ${{ env.REGISTRY_PASSWORD }}
           extra-args: |
             --disable-content-trust
-  silverblue-dell-precision-5570:
-    needs: silverblue-base
-    runs-on: ubuntu-latest
-    steps:
-      - name: Free Disk Space (android, dotnet, boost, CodeQL)
-        run: |
-          sudo rm -rf /usr/local/lib/android # ~12 GB
-          sudo rm -rf /usr/share/dotnet # ~2 GB
-          sudo rm -rf /usr/local/share/boost # ~1 GB
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY/CodeQL" # ~5 GB
 
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Build container image
-        uses: redhat-actions/buildah-build@v2.13
-        with:
-          context: "silverblue-dell-precision-5570"
-          containerfiles: "silverblue-dell-precision-5570/Containerfile"
-          image: silverblue-dell-precision-5570
-          layers: false
-          oci: true
-
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.6
-        with:
-          image: silverblue-dell-precision-5570
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
   silverblue-ace-t8-pro:
     needs: silverblue-base
     runs-on: ubuntu-latest
