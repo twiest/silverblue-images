@@ -1,15 +1,13 @@
 #!/usr/bin/env xonsh
 
-source /usr/local/lib/xonsh/colors.xsh
+$XONSH_SHOW_TRACEBACK = True
 
-script_dir = $(dirname @($ARGS[0]))
-script_name = $(basename @($ARGS[0]))
-distro = $(basename $(dirname $PWD))
+script_dir = $(realpath $(dirname @($ARGS[0]))).strip()
 
 cd @(script_dir)
 
-img_name = $(basename $PWD)
-date_stamp = $(date +%Y-%m-%d)
+img_name = $(basename $PWD).strip()
+date_stamp = $(date +%Y-%m-%d).strip()
 
 # MUST use "--format docker" because the FROM container images has a HEALTHCHECK. Otherwise I get this warning:
 #      WARN[0138] HEALTHCHECK is not supported for OCI image format and will be ignored. Must use `docker` format
