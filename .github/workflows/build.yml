@@ -30,16 +30,11 @@ jobs:
           pushd silverblue-shared-downloader-kernel-cache
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.8
-        with:
-          image: silverblue-shared-downloader-kernel-cache
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-shared-downloader-kernel-cache
+          ./push.xsh
 
   silverblue-shared-builder-brave:
     runs-on: ubuntu-latest
@@ -57,16 +52,11 @@ jobs:
           pushd silverblue-shared-builder-brave
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.8
-        with:
-          image: silverblue-shared-builder-brave
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-shared-builder-brave
+          ./push.xsh
 
   silverblue-shared-downloader-python-validity-cache:
     runs-on: ubuntu-latest
@@ -113,16 +103,11 @@ jobs:
           pushd almalinux-zfs-base
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.8
-        with:
-          image: almalinux-zfs-base
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd almalinux-zfs-base
+          ./push.xsh
 
   silverblue-zfs-base:
     needs: silverblue-shared-downloader-kernel-cache
@@ -148,16 +133,11 @@ jobs:
           pushd silverblue-zfs-base
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.8
-        with:
-          image: silverblue-zfs-base
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-zfs-base
+          ./push.xsh
 
   silverblue-base:
     runs-on: ubuntu-latest
@@ -182,16 +162,11 @@ jobs:
           pushd silverblue-base
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.8
-        with:
-          image: silverblue-base
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-base
+          ./push.xsh
 
   silverblue-shuttle-sz170r8v2:
     needs: silverblue-base
@@ -217,16 +192,11 @@ jobs:
           pushd silverblue-shuttle-sz170r8v2
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.8
-        with:
-          image: silverblue-shuttle-sz170r8v2
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-shuttle-sz170r8v2
+          ./push.xsh
 
   silverblue-supermicro-x10drw-it:
     needs: silverblue-base
@@ -252,16 +222,11 @@ jobs:
           pushd silverblue-supermicro-x10drw-it
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.8
-        with:
-          image: silverblue-supermicro-x10drw-it
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-supermicro-x10drw-it
+          ./push.xsh
 
   silverblue-thinkpad-p1g1:
     needs: silverblue-base
@@ -287,16 +252,11 @@ jobs:
           pushd silverblue-thinkpad-p1g1
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.8
-        with:
-          image: silverblue-thinkpad-p1g1
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-thinkpad-p1g1
+          ./push.xsh
 
   silverblue-thinkpad-p1g5:
     needs: silverblue-base
@@ -322,16 +282,11 @@ jobs:
           pushd silverblue-thinkpad-p1g5
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.8
-        with:
-          image: silverblue-thinkpad-p1g5
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-thinkpad-p1g5
+          ./push.xsh
 
   silverblue-thinkpad-t470:
     needs: [silverblue-base, silverblue-shared-builder-brave, silverblue-shared-downloader-python-validity-cache]
@@ -357,16 +312,11 @@ jobs:
           pushd silverblue-thinkpad-t470
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.6
-        with:
-          image: silverblue-thinkpad-t470
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-thinkpad-t470
+          ./push.xsh
 
   silverblue-zbox-mi548:
     needs: silverblue-base
@@ -392,16 +342,11 @@ jobs:
           pushd silverblue-zbox-mi548
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.6
-        with:
-          image: silverblue-zbox-mi548
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-zbox-mi548
+          ./push.xsh
 
   silverblue-orico:
     needs: silverblue-base
@@ -427,16 +372,11 @@ jobs:
           pushd silverblue-orico
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.6
-        with:
-          image: silverblue-orico
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-orico
+          ./push.xsh
 
   silverblue-ace-t8-pro:
     needs: silverblue-base
@@ -462,16 +402,11 @@ jobs:
           pushd silverblue-ace-t8-pro
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.6
-        with:
-          image: silverblue-ace-t8-pro
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-ace-t8-pro
+          ./push.xsh
 
   silverblue-neosmay-xxx-ac8f-yyy:
     needs: silverblue-base
@@ -497,14 +432,8 @@ jobs:
           pushd silverblue-neosmay-xxx-ac8f-yyy
           ./build.xsh
 
-      - name: Push to ghcr.io
-        uses: redhat-actions/push-to-registry@v2.6
-        with:
-          image: silverblue-neosmay-xxx-ac8f-yyy
-          tags: "latest"
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
-          extra-args: |
-            --disable-content-trust
-
+      - name: Push container image
+        run: |
+          podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
+          pushd silverblue-neosmay-xxx-ac8f-yyy
+          ./push.xsh
