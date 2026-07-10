@@ -2,7 +2,7 @@
 name: Build
 on:
   schedule:
-    - cron: "00 10 * * *"
+    - cron: "00 10 * * *" # 6:00 AM EDT
   push:
     branches: ["main"]
   workflow_dispatch: # This line enables manual triggering
@@ -15,6 +15,8 @@ env:
 
 jobs:
   silverblue-shared-downloader-kernel-cache:
+    env:
+      SRC_DIR: silverblue-shared-downloader-kernel-cache
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -27,16 +29,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-shared-downloader-kernel-cache
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-shared-downloader-kernel-cache
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-shared-builder-brave:
+    env:
+      SRC_DIR: silverblue-shared-builder-brave
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -49,16 +53,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-shared-builder-brave
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-shared-builder-brave
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-shared-downloader-python-validity-cache:
+    env:
+      SRC_DIR: silverblue-shared-downloader-python-validity-cache
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -71,16 +77,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-shared-downloader-python-validity-cache
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-shared-downloader-python-validity-cache
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   almalinux-zfs-base:
+    env:
+      SRC_DIR: almalinux-zfs-base
     runs-on: ubuntu-latest
     steps:
       - name: Free Disk Space (android, dotnet, boost, CodeQL)
@@ -100,16 +108,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd almalinux-zfs-base
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd almalinux-zfs-base
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-zfs-base:
+    env:
+      SRC_DIR: silverblue-zfs-base
     needs: silverblue-shared-downloader-kernel-cache
     runs-on: ubuntu-latest
     steps:
@@ -130,16 +140,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-zfs-base
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-zfs-base
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-base:
+    env:
+      SRC_DIR: silverblue-base
     runs-on: ubuntu-latest
     steps:
       - name: Free Disk Space (android, dotnet, boost, CodeQL)
@@ -159,16 +171,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-base
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-base
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-shuttle-sz170r8v2:
+    env:
+      SRC_DIR: silverblue-shuttle-sz170r8v2
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
@@ -189,16 +203,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-shuttle-sz170r8v2
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-shuttle-sz170r8v2
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-supermicro-x10drw-it:
+    env:
+      SRC_DIR: silverblue-supermicro-x10drw-it
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
@@ -219,16 +235,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-supermicro-x10drw-it
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-supermicro-x10drw-it
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-thinkpad-p1g1:
+    env:
+      SRC_DIR: silverblue-thinkpad-p1g1
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
@@ -249,16 +267,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-thinkpad-p1g1
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-thinkpad-p1g1
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-thinkpad-p1g5:
+    env:
+      SRC_DIR: silverblue-thinkpad-p1g5
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
@@ -279,16 +299,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-thinkpad-p1g5
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-thinkpad-p1g5
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-thinkpad-t470:
+    env:
+      SRC_DIR: silverblue-thinkpad-t470
     needs: [silverblue-base, silverblue-shared-builder-brave, silverblue-shared-downloader-python-validity-cache]
     runs-on: ubuntu-latest
     steps:
@@ -309,16 +331,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-thinkpad-t470
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-thinkpad-t470
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-zbox-mi548:
+    env:
+      SRC_DIR: silverblue-zbox-mi548
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
@@ -339,16 +363,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-zbox-mi548
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-zbox-mi548
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-orico:
+    env:
+      SRC_DIR: silverblue-orico
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
@@ -369,16 +395,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-orico
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-orico
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-ace-t8-pro:
+    env:
+      SRC_DIR: silverblue-ace-t8-pro
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
@@ -399,16 +427,18 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-ace-t8-pro
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-ace-t8-pro
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
 
   silverblue-neosmay-xxx-ac8f-yyy:
+    env:
+      SRC_DIR: silverblue-neosmay-xxx-ac8f-yyy
     needs: silverblue-base
     runs-on: ubuntu-latest
     steps:
@@ -429,11 +459,11 @@ jobs:
 
       - name: Build container image
         run: |
-          pushd silverblue-neosmay-xxx-ac8f-yyy
+          pushd "${{ env.SRC_DIR }}"
           ./build.xsh
 
       - name: Push container image
         run: |
           podman login "${{ env.IMAGE_REGISTRY }}" -u "${{ env.REGISTRY_USER }}" -p "${{ env.REGISTRY_PASSWORD }}"
-          pushd silverblue-neosmay-xxx-ac8f-yyy
+          pushd "${{ env.SRC_DIR }}"
           ./push.xsh
