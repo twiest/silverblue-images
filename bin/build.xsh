@@ -2,7 +2,7 @@
 
 import sys
 
-max_retries = 100
+max_retries = 10
 
 $XONSH_SHOW_TRACEBACK = True
 
