@@ -30,7 +30,9 @@ RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.
     dnf clean all
 
 # Cleanup image for linting
-RUN rm -rf /var && mkdir /var && \
+ADD files/cleanup-slash-run-for-bootc-lint.sh /bin
+RUN /bin/cleanup-slash-run-for-bootc-lint.sh && \
+    rm -rf /var && mkdir /var && \
     rm -rf /boot && mkdir /boot
 
 # Verify image is good (must be run last!)
