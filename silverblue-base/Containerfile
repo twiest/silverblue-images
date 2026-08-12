@@ -5,6 +5,10 @@ FROM ghcr.io/twiest/silverblue-zfs-base:latest
 RUN dnf update -y && \
     dnf clean all
 
+# Add custom ca certs
+ADD files/tnet-self-signed-ca-cert.crt.pem /etc/pki/ca-trust/source/anchors/
+RUN update-ca-trust
+
 # Install rpmfusion repos
 RUN dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm && \
     dnf install -y https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm && \
